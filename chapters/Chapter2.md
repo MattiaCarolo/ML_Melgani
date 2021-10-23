@@ -1,4 +1,4 @@
-# Lesson 3-4
+# Chapter 2 (ref Lesson3.md)
 
 ## Estimation basics
 
