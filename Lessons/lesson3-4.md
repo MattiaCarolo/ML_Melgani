@@ -21,25 +21,75 @@ Let $X = \{ X_1,X_2,....X_N \}$ be the set of $N$ samples we have which we will 
 
 ## Parametric estimation
 
-In parametric estimation we assume we know the shape of the probability function of the parameters. These parameters related to the model $p(x)$ are stored in a vector called $\theta$ where $\theta =(\theta_1,\theta_2,....,\theta_n)$ .
+In parametric estimation we assume we know the shape of the probability function of the parameters. These parameters related to the model $p(x)$ are stored in a vector called $\theta$ where $\theta =(\theta_1,\theta_2,....,\theta_n)$ . And since our model is parametric (depends from certain parameters) his density won't be based only on the training itself so we underline this by using the notation $p(x|\theta)$
 
-Since we know that $X$ which contains our random samples we can compute a likelihood function as follows:
+So assuming having a set of independent training samples $X$ we can introduce the **likelihood function**
 
-$$ p(X|\theta) = \prod_{k=1}^Np(x_k|\theta )$$
+### Likelihood Function
+A likelihood function it's a source with different observations. Through this function we can quantify the matching between the set of training samples and the parameters of the model and it's identified as $P(X|\theta)$ where since 
 
-Using this likelihood function we can understand how much our training set fits our training model.
-Maximizing our likelihood function permits to understand which training set fits better.
+$$ p(x_1,x_2 .... x_n | \theta) = P(X|\theta) $$
+
+than 
+
+$$ p(x_1,x_2 .... x_n | \theta) = p(x_1|\theta)*p(x_2|\theta)*......*p(x_n|\theta) $$
+
+so we can formalize it like
+
+$$ P(X|\theta) = \prod_{k=1}^Np(x_k|\theta )$$
+
+This matching is given by the formula above where the joint probabilities between the sets is simply the product between the single probabilities depending on our parameters.
+Through this function we can understand how much our training set fits our training model resulting in an understanding of which set is better.
+
+> #### Exercise on Likelihood Function
+
+Let's assume we have a set of training samples represented from the red dots on the image below. Since we are dealing with a parametric model we know the model which for this example will be gaussian so our $p(x|\theta)$ will be $p(x|\mu ,\sigma^2)$ which will follow a normal density $N(\mu,\sigma^2)$.
+
+For the sake of the exercise we consider a $\sigma$ of 1 in order to keep a gaussian with unitary varaince but still we don't know where to put it since $\mu$ which is a continuos value can be placed everywhere in our $x$ axis so it has infinite possiblities so we need values for which the model referring to our $\mu$ covers the training set.
+
+|![Training set](../Img/Chapter2/TrainingSets.png "Training set and models")|
+|:--:|
+|**Training Set and Candidate Models**|
+
+To quantify how much a model fits the training set we need to compute the likelihood function which in this case wil be represented from the gaussian function 
+
+$$ \frac{1}{\sigma \sqrt{2\pi}}\exp(-\frac{(x-\mu)^2}{2\sigma^2}) $$
+
+which with $\sigma = 1$ is
+
+$$ \frac{1}{\sqrt{2\pi}}\exp(-\frac{(x-\mu)^2}{2}) $$
+
+so $\mu$ will be our unknown feature to find.
+To compute it we need to compute every training sample over our $\mu$ so 
+
+$$ p(x_1,x_2,... x_n | \mu) (A) = p(x_1|\mu)*p(x_2|\mu)*....*p(x_n|\mu) (B)$$ (1)
+
+$$ (A) = \frac{1}{\sqrt{2\pi}}\exp(-\frac{(x_1-\mu)^2}{2}) * \frac{1}{\sqrt{2\pi}}\exp(-\frac{(x_2-\mu)^2}{2}) *.... * \frac{1}{\sqrt{2\pi}}\exp(-\frac{(x_n-\mu)^2}{2})$$ (2)
+
+$$ (A) = \frac{1}{\sqrt{2\pi}} \prod_{i=1}^{N} \exp(-\frac{(x_i-\mu)^2}{2})$$ (3)
+
+where for $x_i$ we mean the single sample iterated over our likelihood function.
+
+> **NB** Care that in this case we can do the product beacuse the product of a gaussian is still a gaussian. For other types of model we need to take into care other forms to compute the likelihood
+
+After the computation we will have as a result a gaussian with the mean calculated from the training sets with our $\hat{\theta}$ as the computed mean. This point will be the maximum agreement between the training sets and the model.
+
+|![Training sets](../Img/Chapter2/NarrowMeanLikelihood.png "Comparison between Uninformed searchs")|
+|:--:|
+|**Computed Gaussian**|
+
+Still when we work with Maximum Likelihood Estimation in general it's preferred to work with a log function in order to get rid of the exponential term and this will make computation more easier. With this method we don't lose the generality since our $\hat{\theta}$ will remain the same because the logarith is a monotonic function
+
+|![Training sets](../Img/Chapter2/LogLikelihood.png "Comparison between Uninformed searchs")|
+|:--:|
+|**Training sets**|
 
 ## Estimation Procedures
 
-There are two main procedures for estimation which are:
+There are two main procedures for parametric estimation which are:
 
-- *Maximum Likelihood Estimation*
-- *Bayesian Estimation*
-
-### Bayesian estimation
-
-teta its a vector of random variables where we assume a prior knowledge of the distribution of the single variables.
+- *Maximum Likelihood Estimation* $\Rightarrow$ we look at $\theta$ as a vector of parameters as a vector of unknown constants.
+- *Bayesian Estimation* $\Rightarrow$ $\theta$ its a vector of random variables where we assume a prior knowledge of the distribution of the single variables. This prior density will contain the knowledge of the experts and will be used to get the posterior density (we'll talk later about it)
 
 ## Estimation Goodness (voltimeter example)
 
@@ -74,7 +124,9 @@ We need our variance to be greater than or equal to this bound. The more our var
 
 $$ var \{ \epsilon_i\} \ge [I^{-1}(\theta)]_{ij} $$
 
-where $I(\theta)$ is the **Fisher information matrix** where every element is defined as
+where $I(\theta)$ is the **Fisher information matrix** which is defined as a matrix where each element is computed like
+
+$$ $$
 
 Problem is that often estimates form real problems are obtained with biased and inefficient estimators so in order to judge better the estimation of our estimatore we need large set of observations. This means that an estimator to be good must have good asymptotic properties.
 It can be asymptotically unbiased if 
