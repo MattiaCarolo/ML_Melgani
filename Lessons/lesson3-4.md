@@ -118,28 +118,49 @@ $$ var\{ \epsilon \} = E\{(\hat{\theta_i} - \theta_i)^2\} \space {where} \space 
 
 but to assess whether our variance is good or not we need to define a lower bound called the **Cramer-Rao Bound**
 
-## Cramer-Rao Bound
+### Cramer-Rao Bound
 
 We need our variance to be greater than or equal to this bound. The more our variance comes closer to this lower bound the more our estimators will be unbiased. Formalized we can express it like:
 
-$$ var \{ \epsilon_i\} \ge [I^{-1}(\theta)]_{ij} $$
+$$ var \{ \epsilon_i\} \ge [I^{-1}(\theta)]_{ii} {with} \space i=1,2,3...r $$
 
 where $I(\theta)$ is the **Fisher information matrix** which is defined as a matrix where each element is computed like
 
-$$ $$
+$$ [I(\theta)]_{ij} = E\{ \frac{ \partial \ln [p(X|\theta)]}{\partial \theta_i} \cdot \frac{ \partial \ln [p(X|\theta)]}{\partial \theta_i}\} $$
 
-Problem is that often estimates form real problems are obtained with biased and inefficient estimators so in order to judge better the estimation of our estimatore we need large set of observations. This means that an estimator to be good must have good asymptotic properties.
+where as we can see it's the derivative of the log likelihood function
+
+Problem is that often estimates form real problems are obtained with biased and inefficient estimators so in order to judge better the estimation of our estimator we need large set of observations. This means that an estimator to be good must have good asymptotic properties.
 It can be asymptotically unbiased if 
 
+$$ \lim_{N\rightarrow +\infty} E\{\epsilon\} = 0 \Rightarrow \lim_{N\rightarrow +\infty} E\{\hat{\theta\}} = \theta  $$
 
+while to be asymptotically efficient if 
 
-### Maximum Likelihood Estimation
+$$ \lim_{N\rightarrow +\infty} \frac{{var}\{\epsilon_i\}}{[I^{-1}(\theta)]_{ii}} = 1 \space {with} \space i=1,2....,r $$
 
-taking as example some gaussian models in which we know the variance but not the mean. To maximize the likelihood function we need to maximize the function related or to minimize/maximize the inner function.
+So an estimate to be considered efficient need to be **consistent**. Consistent means that it needs to converge to the true value when the number $N$ of samples tend to infinite. The necessary condition for this is that the estimate is asymptotivally unbiased and with variance converging to zero when $N \rightarrow +\infty$
+
+## Maximum Likelihood Estimation
+
+The maximum likelihood estimate (ML) of $\theta$ is the estimator that maximizes the argument $\theta$ so
+$$ \hat{\theta} = \arg \max_{\theta} p(X|\theta) $$
+
+|![Training sets](../Img/Chapter2/UnivariateGaussian.png "Comparison between Uninformed searchs")|
+|:--:|
+|**Mono Dimensional Gaussian**|
+
+Taking as example the image above with some gaussian models in which we know the variance but not the mean and in this estiamation we are given only one sample. To maximize the likelihood function we need to maximize the function related or to minimize/maximize the inner function of the model. In order to do this we will compute our likelihood function over and over until we will reach the maximum argument
 
 In a finite number of training examples, if it exist an efficient estimate and the ML estimation is unbiased, than the ML will be the efficient estimate
 
-### Model Selection
+> ### Properties
+> Even if in reality there is not an efficient estimate the ML estimate exhibits good aymptotic properties since it is:
+> - asymptotically unbiased
+> - asymptotically efficient
+> - consistent
+
+### Statistical Model Selection
 
 Even if we have a complete deterministic environment still, during our processing of the information, we introduce some noise in the information processed due to physical and even mathematical reasons (kernelling, bad sensibility etc.etc.)
 The choice so it's entirely made by the supervisor heuristically. Usually we take a model which fits on our observation
