@@ -45,7 +45,8 @@ Through this function we can understand how much our training set fits our train
 
 > #### Exercise on Likelihood Function
 
-Let's assume we have a set of training samples represented from the red dots on the image below. Since we are dealing with a parametric model we know the model which for this example will be gaussian so our $p(x|\theta)$ will be $p(x|\mu ,\sigma^2)$ which will follow a normal density $N(\mu,\sigma^2)$.
+Let's assume we have a set of training samples represented from the red dots 
+on the image below. Since we are dealing with a parametric model we know the model which for this example will be gaussian so our $p(x|\theta)$ will be $p(x|\mu ,\sigma^2)$ which will follow a normal density $N(\mu,\sigma^2)$.
 
 For the sake of the exercise we consider a $\sigma$ of 1 in order to keep a gaussian with unitary varaince but still we don't know where to put it since $\mu$ which is a continuos value can be placed everywhere in our $x$ axis so it has infinite possiblities so we need values for which the model referring to our $\mu$ covers the training set.
 
@@ -82,10 +83,11 @@ After the computation we will have as a result a gaussian with the mean calculat
 
 Still when we work with Maximum Likelihood Estimation in general it's preferred to work with a log function in order to get rid of the exponential term and this will make computation more easier. With this method we don't lose the generality since our $\hat{\theta}$ will remain the same because the logarith is a monotonic function
 
-|![Training sets](../Img/Chapter2/LogLikelihood.png "Comparison between Uninformed searchs")|
+|![Training sets](../Img/Chapter2/LogLikelihood.png "Comparison between U
+ninformed searchs")|
 |:--:|
 |**Training sets**|
-
+ 
 ## Estimation Procedures
 
 There are two main procedures for parametric estimation which are:
