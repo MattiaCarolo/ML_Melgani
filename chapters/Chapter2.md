@@ -319,5 +319,16 @@ N = \frac{\sum_{i=1}^N(x_i-\mu)^2}{\sigma^2}
 $$
 
 $$
-\hat\mu = \frac{1}{N} \sum_{i=1}^N x_i
+\sigma^2 = \frac{1}{N} \sum_{i=1}^N(x_i-\mu)^2
 $$
+
+### Gaussian Model: ML Estimation
+
+taking the example before, when we want to generalize the estimation we update the terms in order to:
+
+- the mean will be 
+  $$\hat{\mu}=\frac{1}{N}\sum_{k=1}^N x_k$$
+- covariance
+  $$\hat{\Sigma} = \frac{1}{N} \sum_{k=1}^{N}(x_k-\hat{m})(x_k-\hat{m})^t = \frac{1}{N} \sum_{k=1}^{N} x_k x_k^t - \hat{m} \hat{m}^t $$
+
+Such estimates are asymptotically unbiased and efficient and consistent
