@@ -83,8 +83,7 @@ After the computation we will have as a result a gaussian with the mean calculat
 
 Still when we work with Maximum Likelihood Estimation in general it's preferred to work with a log function in order to get rid of the exponential term and this will make computation more easier. With this method we don't lose the generality since our $\hat{\theta}$ will remain the same because the logarith is a monotonic function
 
-|![Training sets](../Img/Chapter2/LogLikelihood.png "Comparison between U
-ninformed searchs")|
+|![Training sets](../Img/Chapter2/LogLikelihood.png "Comparison between Uninformed searchs")|
 |:--:|
 |**Training sets**|
  
@@ -164,15 +163,72 @@ In a finite number of training examples, if it exist an efficient estimate and t
 > - asymptotically efficient
 > - consistent
 
-### Statistical Model Selection
+## Statistical Model Selection
 
 Even if we have a complete deterministic environment still, during our processing of the information, we introduce some noise in the information processed due to physical and even mathematical reasons (kernelling, bad sensibility etc.etc.)
-The choice so it's entirely made by the supervisor heuristically. Usually we take a model which fits on our observation
+The choice so it's entirely made by the supervisor heuristically. Usually we take a model which fits on our observation.
 
-### Gaussian Model
+Among the models the the most popular ones are:
+
+### Gaussian
+
+### Generalized Gaussian
+
+### Gamma
+
+### Rayleigh
+
+### Chi square
+
+### Log-Normal
+
+## Gaussian Model
 
 This model is widespread for a mathematical reason called **central limit theorem** which tells that if the sum of all variables has a finite variance than the result will still be gaussian
 
 In a 2D Gaussian PDF we can look at our distribution like a bell shaped distribution. We can cut the bell in parallel planes which will form our isolevels and are shaped like an ellipses.
 
 complete correlation x1 = x2 which means that we only have linear proportion between the two features. Increasing the $\Delta$ between the fetures results in a more big ellipses.
+
+Looking more closely at the gaussian model we analyze the **multivariate Gaussian pdf** where multivariate means that we are in an N-feature space
+
+$$ p(x|\theta) = p(x|m,\Sigma) = \frac{1}{(2\pi)^{n/2} |\Sigma|^{1/2}} \exp [-\frac{1}{2}(x-m)^t\Sigma^{-1}(x-m)] $$
+
+In particular we recognize that:
+
+- $\theta$ in this case is componed by two parameters, the **mean** $m$ and the **Covariance matrix** $\Sigma$
+- $m$ tells us therre the center of our gaussian density (we can see it as a baricenter of the density)
+- $\Sigma$ encodes the shape of the gaussian density
+- $n$ represents the number of dimensions inside our feature space
+- $|\Sigma|$ is the determinant of the matrix
+
+The main parameters which defines a multivariate Gaussian pdf are the *mean vector* and the *covariance matrix* which are defined as:
+
+- mean **m** = $E\{\bold{x}\}$ which is the expectation of the random vector $x$
+- covariance matrix $\Sigma = Cov\{\bold{x}\} = E\{(x-m)(x-m)^t\} = E\{xx^t\}-mm^t$ which is the dispersion of the points around the mean vector
+
+### Properties of the covariance matrix
+
+ - $\Sigma$ is **Symmetric**: $\Sigma = \Sigma^t$
+ - $\Sigma$ is **Positive semidefinite**
+ - For **indipendent** features:
+
+$$ 
+\begin{bmatrix} 
+	\sigma^2_1 & 0 & ... & 0\\
+	0 & \sigma^2_2 & ... & 0\\
+	... & ... & ... & ...\\
+  0 & 0 & ... & \sigma^2_n \\
+\end{bmatrix}
+
+\Rightarrow p(\bold{x}) = p(x_1),p(x_2).....p(x_n)
+$$
+
+**N.B. $\bold{\Rightarrow}$** Remember that this is possible **only** for independent features
+
+> The covariance matrix is positive semifinite which means that if you compute the eigenvalues of the matrix all the eigenvalues will be $\geq$ 0.
+> In general is computed like $|\Sigma - \lambda I| = 0$ where:
+> - $I$ is the identity matrix
+> - $\lambda$ is the eigenvalue. The number of eigenvalues will be the same as the 
+>
+>The Result
