@@ -43,7 +43,7 @@ $$ P(X|\theta) = \prod_{k=1}^Np(x_k|\theta )$$
 This matching is given by the formula above where the joint probabilities between the sets is simply the product between the single probabilities depending on our parameters.
 Through this function we can understand how much our training set fits our training model resulting in an understanding of which set is better.
 
-> #### Exercise on Likelihood Function
+#### Exercise on Likelihood Function
 
 Let's assume we have a set of training samples represented from the red dots 
 on the image below. Since we are dealing with a parametric model we know the model which for this example will be gaussian so our $p(x|\theta)$ will be $p(x|\mu ,\sigma^2)$ which will follow a normal density $N(\mu,\sigma^2)$.
@@ -229,6 +229,95 @@ $$
 > The covariance matrix is positive semifinite which means that if you compute the eigenvalues of the matrix all the eigenvalues will be $\geq$ 0.
 > In general is computed like $|\Sigma - \lambda I| = 0$ where:
 > - $I$ is the identity matrix
-> - $\lambda$ is the eigenvalue. The number of eigenvalues will be the same as the 
+> - $\lambda$ is the eigenvalue. The number of eigenvalues will be the same as the number of the features
 >
->The Result
+>The Result after the resolution of the equation will be the corresponding eigenvalues. From the eigenvalues we can compute the eigenvectors and these are important for a simple reason. The higher eigenvalue will correspond to the most dominant eigenvector and so forth. Plus the most dominant eigenvector will be the main direction of the covariance matrix
+
+### Shape of a gaussian model
+
+#### Shape of a 2D Gaussian model
+
+The shape of a gaussian model resembles a bell representing the pdf itself so it's integral must be equal to 1.
+
+|![Gaussian2D.png](../Img/Chapter2/Gaussian2D.png "2D Gaussian and intersection")|
+|:--:|
+|**2D Gaussian and intersection**|
+
+If we cut the bell with horizontal planes we can cut an intersection of the bell and the result will be an ellipse. This ellipse corresponds to an isolevel where all points have the same value of density as we can see on the image above on the left.
+
+Projecting the bell on the $x_1,x_2$ plane will give as a result the image on the right where we can see all the different isolevels that compone the gaussian bell. As we can see the isolevels are elliptic and have a main direction. This is given by the largest eigenvalue  which will correspond to the highest eigenvector as stated before.
+If the axis are perpendicular one another it means that the two features are **completely uncorrelated** while the more the two axis become closer the more the two features will be **correlated**.
+Another information we can extract is that the longer the ellipse is on a particular axis the more the correlated variance will be higher
+
+#### Shape of a N-D Gaussian model
+
+Under the N domain we can generalize the obsesrvations made on the 2-D domain where:
+
+- Where before we had 2 eigenvalues and eigenvectoes now we have $\lambda_1,\lambda_2...\lambda_n$ eigenvalues and $e_1,e_2...e_n$ eigenvectors
+  - By convention, the eigenvalues are ordered so that $\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_n$
+- Since $\Sigma$ is symmetric and positive semidefinite, the eigenvalues will take positive values
+- The eigenvectors will form an **orthogonal basis**
+- The isolevels of p(x) are hyperellipses in $\Reals^n$ whose axis directions are governed by the eigenvectors
+- the first eigenvectors will define the **principal axis** while the last one will determine the **smallest axis**
+
+### Example on ML Estimation
+
+Let's suppose we have a set of $n$ training samples $X=<x_1,x_2...x_n>$ and $x$~$N(\mu,\sigma^2)$.
+We need to estimate $\hat{\mu}$ and $\hat{\sigma^2}$ according to the ML estimator.
+
+To do this we have two steps to do.
+
+#### Compute the likelyhood function
+
+$$
+p(X|\mu,\sigma^2) = \prod_{i=1}^N p(x_i|\mu,\sigma^2)
+$$
+
+where $p(X|\mu,\sigma^2)$ will be the likelihood function interested. Now we compute the $\log$ function of it **(1)** substituting the $(p(x_i|\mu,\sigma^2))$ with his relative formula **(2)** in order to get **(3)**
+
+$$
+\ln (p(X|\mu,\sigma^2)) = \sum_{i=1}^N \ln (p(x_i|\mu,\sigma^2))
+$$ (1)
+
+$$
+p(x|\mu,\sigma^2)=\frac{1}{\sigma\sqrt{2\pi}}\exp(-\frac{1}{2}(\frac{x-\mu}{\sigma})^2)
+$$ (2)
+
+$$
+(1) = \sum_{i=1}^N [-\frac{1}{2}\ln 2\pi -\ln\sigma -\frac{(x_i-\mu)^2}{2\sigma^2}]
+$$ (3)
+
+where **(3)** will be the desired function $f(\mu,\sigma^2)$
+
+#### Maximize the function
+
+The best $\mu$ will be found after deriving the function so:
+
+$$
+\frac{\partial f(\mu,\sigma^2)}{\partial \mu} = \sum_{i=1}^N (-)(-1*\frac{2(x_i-\mu)}{2\sigma^2}) = 0
+$$
+
+$$
+\sum_{i=1}^N (\cancel-)(\cancel-1*\frac{\cancel2(x_i-\mu)}{\cancel{2}\sigma^2}) = 0
+$$
+
+$$
+\sum_{i=1}^N \frac{(x_i-N\hat\mu)}{\cancel{\sigma^2}} = 0 \Rightarrow \sum_{i=1}^N x_i - N \hat{\mu} = 0
+$$
+
+$$
+\hat\mu = \frac{1}{N} \sum_{i=1}^N x_i
+$$
+
+same we will do for the $\sigma$ so:
+
+$$
+\frac{\partial f(\mu,\sigma^2)}{\partial \sigma} = \sum_{i=1}^N [-\frac{1}{\cancel\sigma} -(\cancel{-2})*\frac{(x_i-\mu)^2}{\cancel2\sigma^{\cancel{3}2}}]= 0
+$$
+$$
+N = \frac{\sum_{i=1}^N(x_i-\mu)^2}{\sigma^2}
+$$
+
+$$
+\hat\mu = \frac{1}{N} \sum_{i=1}^N x_i
+$$
