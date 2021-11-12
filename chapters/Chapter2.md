@@ -1,3 +1,12 @@
+---
+title: "Chapter2 - Machine Learning"
+author: "Me"
+header-includes:
+   - \usepackage{cancel}
+output:
+    pdf_document
+---
+
 # Chapter 2 (ref Lesson3.md)
 
 # Lesson 3-4
@@ -219,9 +228,7 @@ $$
 	0 & \sigma^2_2 & ... & 0\\
 	... & ... & ... & ...\\
   0 & 0 & ... & \sigma^2_n \\
-\end{bmatrix}
-
-\Rightarrow p(\bold{x}) = p(x_1),p(x_2).....p(x_n)
+\end{bmatrix} \Rightarrow p(\bold{x}) = p(x_1),p(x_2).....p(x_n)
 $$
 
 **N.B. $\bold{\Rightarrow}$** Remember that this is possible **only** for independent features
@@ -257,7 +264,7 @@ Under the N domain we can generalize the obsesrvations made on the 2-D domain wh
   - By convention, the eigenvalues are ordered so that $\lambda_1 \geq \lambda_2 \geq ... \geq \lambda_n$
 - Since $\Sigma$ is symmetric and positive semidefinite, the eigenvalues will take positive values
 - The eigenvectors will form an **orthogonal basis**
-- The isolevels of p(x) are hyperellipses in $\Reals^n$ whose axis directions are governed by the eigenvectors
+- The isolevels of p(x) are hyperellipses in $R^{n}$ whose axis directions are governed by the eigenvectors
 - the first eigenvectors will define the **principal axis** while the last one will determine the **smallest axis**
 
 ### Example on ML Estimation
@@ -265,27 +272,32 @@ Under the N domain we can generalize the obsesrvations made on the 2-D domain wh
 Let's suppose we have a set of $n$ training samples $X=<x_1,x_2...x_n>$ and $x$~$N(\mu,\sigma^2)$.
 We need to estimate $\hat{\mu}$ and $\hat{\sigma^2}$ according to the ML estimator.
 
+### Maximum Margin Classifier
+
+Given a training set $D$ a classifier confidence margin
+
+$$ \rho = min_{(\bold{X},y) \in D } yf(\bold{x})$$
+
+and it is the minimal confidence margin among the training examples which is used to predict the true label
+
+$$ \frac{\rho}{||\bold{w}||} = min_{(\bold{X},y) \in D } \frac{yf(\bold{x})}{||\bold{w}||}$$
+
+In a canonical hyperplane there is an infinite number of equivalent formulation to represent it and this means that the separating 
+
 To do this we have two steps to do.
 
 #### Compute the likelyhood function
 
-$$
-p(X|\mu,\sigma^2) = \prod_{i=1}^N p(x_i|\mu,\sigma^2)
-$$
+$$p(X|\mu,\sigma^2) = \prod_{i=1}^N p(x_i|\mu,\sigma^2)$$
 
 where $p(X|\mu,\sigma^2)$ will be the likelihood function interested. Now we compute the $\log$ function of it **(1)** substituting the $(p(x_i|\mu,\sigma^2))$ with his relative formula **(2)** in order to get **(3)**
 
-$$
-\ln (p(X|\mu,\sigma^2)) = \sum_{i=1}^N \ln (p(x_i|\mu,\sigma^2))
-$$ (1)
+$$\ln (p(X|\mu,\sigma^2)) = \sum_{i=1}^N \ln (p(x_i|\mu,\sigma^2))$$ (1)
 
-$$
-p(x|\mu,\sigma^2)=\frac{1}{\sigma\sqrt{2\pi}}\exp(-\frac{1}{2}(\frac{x-\mu}{\sigma})^2)
-$$ (2)
+$$p(x|\mu,\sigma^2)=\frac{1}{\sigma\sqrt{2\pi}}\exp(-\frac{1}{2}(\frac{x-\mu}{\sigma})^2)$$ (2)
 
-$$
-(1) = \sum_{i=1}^N [-\frac{1}{2}\ln 2\pi -\ln\sigma -\frac{(x_i-\mu)^2}{2\sigma^2}]
-$$ (3)
+
+$$(1) = \sum_{i=1}^N [-\frac{1}{2}\ln 2\pi -\ln\sigma -\frac{(x_i-\mu)^2}{2\sigma^2}]$$ (3)
 
 where **(3)** will be the desired function $f(\mu,\sigma^2)$
 
@@ -293,21 +305,13 @@ where **(3)** will be the desired function $f(\mu,\sigma^2)$
 
 The best $\mu$ will be found after deriving the function so:
 
-$$
-\frac{\partial f(\mu,\sigma^2)}{\partial \mu} = \sum_{i=1}^N (-)(-1*\frac{2(x_i-\mu)}{2\sigma^2}) = 0
-$$
+$$\frac{\partial f(\mu,\sigma^2)}{\partial \mu} = \sum_{i=1}^N (-)(-1*\frac{2(x_i-\mu)}{2\sigma^2}) = 0$$
 
-$$
-\sum_{i=1}^N (\cancel-)(\cancel-1*\frac{\cancel2(x_i-\mu)}{\cancel{2}\sigma^2}) = 0
-$$
+$$\sum_{i=1}^N (\cancel{-})(\cancel{-}1*\frac{\cancel{2}(x_i-\mu)}{\cancel{2}\sigma^2}) = 0$$
 
-$$
-\sum_{i=1}^N \frac{(x_i-N\hat\mu)}{\cancel{\sigma^2}} = 0 \Rightarrow \sum_{i=1}^N x_i - N \hat{\mu} = 0
-$$
+$$\sum_{i=1}^N \frac{(x_i-N\hat\mu)}{\cancel{\sigma^2}} = 0 \Rightarrow \sum_{i=1}^N x_i - N \hat{\mu} = 0$$
 
-$$
-\hat\mu = \frac{1}{N} \sum_{i=1}^N x_i
-$$
+$$\hat\mu = \frac{1}{N} \sum_{i=1}^N x_i$$
 
 same we will do for the $\sigma$ so:
 
@@ -332,3 +336,5 @@ taking the example before, when we want to generalize the estimation we update t
   $$\hat{\Sigma} = \frac{1}{N} \sum_{k=1}^{N}(x_k-\hat{m})(x_k-\hat{m})^t = \frac{1}{N} \sum_{k=1}^{N} x_k x_k^t - \hat{m} \hat{m}^t $$
 
 Such estimates are asymptotically unbiased and efficient and consistent
+
+## Bayesian estimation
