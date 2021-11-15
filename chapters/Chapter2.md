@@ -4,6 +4,7 @@ author: "Mattia Carolo - @Carolino96"
 header-includes:
    - \usepackage{cancel}
    - \usepackage{tikz}
+   - \usepackage{amsmath}
 output:
     pdf_document
 ---
@@ -405,3 +406,76 @@ $$
 
 where V is the volume of the space R
 
+|![Gaussian2D.png](../Img/Chapter2/nonparametric_graph.png "2D Gaussian and intersection")|
+|:--:|
+|**Worst Graph ever about non parametric**|
+
+> **Disclaimer**
+> my drawing skills are horrible so u should consider that R is a small region and the probability in it should be homogeneous (will redo the graph later)
+
+we consider a small region $R$ around $x^*$. To compute the probability in the colored are we will do
+
+$$
+P = p(x^*)*L
+$$
+
+so the probability related to our region $R$ will be
+
+$$
+P_R = p(x^*)*V
+$$
+
+So since we have training samples which are distributed along the x axis we can compute the the density with the relative frequency where the samples in $R$ will be noted with $K$ while the golbal number will be $N$ so $P_R$ will be
+
+$$
+P_R = \frac{K}{N}
+$$
+
+> **Relative Frequency**
+>
+> The relative frequency is the number of favorable cases over the total number of cases. In other words how many samples can be found in our region. (E.G, If 10 are found in R and 10000 outside it the density of our region will be 10/10000
+
+If we compare the last two equations given the fact they have the same first term we get that
+
+$$
+p(x^*)*V = \frac{K}{N} \space \Rightarrow \space p(x^*)= \frac{K}{N*V}
+$$
+
+The result is pretty significant since for both K-NN and Parzen since thery are both based by that.
+
+A consistent estiamte of $P_R$ can be achieved through the use of the relative frquency where for an infinite number of training samples the estimate of $P_R$ will tend to the ground truth.
+
+Problem is that on the first assumption we said that our $p(x^*)$ should be almost a constant with a region $R$ sufficiently small to preserve it. But with few training samples in our region $R$ we can't have a good estimate on our $P_R$ so we have a discordance between these two assumptions so we need to make a tradeoff between the two cases.
+
+## K-NN Estimation
+
+In K-NN estimation the value $K$ is set a priori and the shape of the volume centered in $X^*$ is chosen at priori (e.g. an hypersphere). This method consists on expanding the cell up until it contains the K training samples inside it where they will br the k closest samples to our $x^*$.
+Let $V_K(x^*)$ be the resulting volume the pdf value at $x^*$ is 
+
+$$
+\hat{p}(x^*) = \frac{K}{NV_K(x^*)}
+$$
+
+ if $K$ is chosen as a function of $N$ (e.g. $K(N) = \sqrt{N}$) a necessary and sufficient condition to get a consistent estimate in all points, here *p(x)* is continuous, is given by:
+$$\lim_{N\rightarrow+\infty} K_N = +\infty, \lim_{N\rightarrow+\infty} \frac{K_N}{N} = 0$$
+the first term tells us that as long as the number of training samples tends to infinity even our $K$ will tend to it since it will try to get all the samples while the second one specify the ratio between $K$ and $N$ specifying that $N$ is much larger than $K$
+
+## Parzen Window Estimation
+
+### Hypothesis
+
+The **Parzen Window** estimation can be introduced by temporarily assuming that $R$ is a *n-dimensional hypercube*. In this hypercube centered on $x^*$ the length of an edge will be $h$ and it's volume will be $V=h^n$
+
+### Methodology
+
+We need an instruments that tethers the volume with the training samples. This tool is called **window function**. This function will be normalized at the start and will be centered on the origin
+$$
+\gamma(x)
+\begin{cases}
+      1, \text{ if } x \text{ belongs to the hypercube} \\
+      0, \text{ otherwise }
+\end{cases}
+$$
+
+This function simply tells that if the sample x* is in the window it returns 1 otherwise 0.
+Considering a more general volume not centered on origin but on a random sample $x*$ with an edge h, a training sample $x_k$ belongs to $R$ if $\gamma[(x_k-x^*){h}] =1$ otherwise $0$
