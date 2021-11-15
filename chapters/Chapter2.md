@@ -1,17 +1,14 @@
 ---
 title: "Chapter2 - Machine Learning"
-author: "Me"
+author: "Mattia Carolo - @Carolino96"
 header-includes:
    - \usepackage{cancel}
+   - \usepackage{tikz}
 output:
     pdf_document
 ---
 
-# Chapter 2 (ref Lesson3.md)
-
-# Lesson 3-4
-
-## Estimation basics
+# Estimation basics
 
 In estimation theory, stochastic signlas can be subdivided in three categories:
 
@@ -30,13 +27,13 @@ Let $x = \{ x_1,x_2,....x_n \}$ be a vector of $n$ features of an unknown pdf (e
 
 Let $X = \{ X_1,X_2,....X_N \}$ be the set of $N$ samples we have which we will use to crete our model. These samples will be called *training samples* and will be the base to estimate our model.
 
-## Parametric estimation
+# Parametric estimation
 
 In parametric estimation we assume we know the shape of the probability function of the parameters. These parameters related to the model $p(x)$ are stored in a vector called $\theta$ where $\theta =(\theta_1,\theta_2,....,\theta_n)$ . And since our model is parametric (depends from certain parameters) his density won't be based only on the training itself so we underline this by using the notation $p(x|\theta)$
 
 So assuming having a set of independent training samples $X$ we can introduce the **likelihood function**
 
-### Likelihood Function
+## Likelihood Function
 A likelihood function it's a source with different observations. Through this function we can quantify the matching between the set of training samples and the parameters of the model and it's identified as $P(X|\theta)$ where since 
 
 $$ p(x_1,x_2 .... x_n | \theta) = P(X|\theta) $$
@@ -52,7 +49,7 @@ $$ P(X|\theta) = \prod_{k=1}^Np(x_k|\theta )$$
 This matching is given by the formula above where the joint probabilities between the sets is simply the product between the single probabilities depending on our parameters.
 Through this function we can understand how much our training set fits our training model resulting in an understanding of which set is better.
 
-#### Exercise on Likelihood Function
+### Exercise on Likelihood Function
 
 Let's assume we have a set of training samples represented from the red dots 
 on the image below. Since we are dealing with a parametric model we know the model which for this example will be gaussian so our $p(x|\theta)$ will be $p(x|\mu ,\sigma^2)$ which will follow a normal density $N(\mu,\sigma^2)$.
@@ -96,7 +93,7 @@ Still when we work with Maximum Likelihood Estimation in general it's preferred 
 |:--:|
 |**Training sets**|
  
-## Estimation Procedures
+# Estimation Procedures
 
 There are two main procedures for parametric estimation which are:
 
@@ -172,7 +169,7 @@ In a finite number of training examples, if it exist an efficient estimate and t
 > - asymptotically efficient
 > - consistent
 
-## Statistical Model Selection
+### Statistical Model Selection
 
 Even if we have a complete deterministic environment still, during our processing of the information, we introduce some noise in the information processed due to physical and even mathematical reasons (kernelling, bad sensibility etc.etc.)
 The choice so it's entirely made by the supervisor heuristically. Usually we take a model which fits on our observation.
@@ -216,7 +213,7 @@ The main parameters which defines a multivariate Gaussian pdf are the *mean vect
 - mean **m** = $E\{\bold{x}\}$ which is the expectation of the random vector $x$
 - covariance matrix $\Sigma = Cov\{\bold{x}\} = E\{(x-m)(x-m)^t\} = E\{xx^t\}-mm^t$ which is the dispersion of the points around the mean vector
 
-### Properties of the covariance matrix
+#### Properties of the covariance matrix
 
  - $\Sigma$ is **Symmetric**: $\Sigma = \Sigma^t$
  - $\Sigma$ is **Positive semidefinite**
@@ -267,7 +264,7 @@ Under the N domain we can generalize the obsesrvations made on the 2-D domain wh
 - The isolevels of p(x) are hyperellipses in $R^{n}$ whose axis directions are governed by the eigenvectors
 - the first eigenvectors will define the **principal axis** while the last one will determine the **smallest axis**
 
-### Example on ML Estimation
+## Example on ML Estimation
 
 Let's suppose we have a set of $n$ training samples $X=<x_1,x_2...x_n>$ and $x$~$N(\mu,\sigma^2)$.
 We need to estimate $\hat{\mu}$ and $\hat{\sigma^2}$ according to the ML estimator.
@@ -286,7 +283,7 @@ In a canonical hyperplane there is an infinite number of equivalent formulation 
 
 To do this we have two steps to do.
 
-#### Compute the likelyhood function
+### Compute the likelyhood function
 
 $$p(X|\mu,\sigma^2) = \prod_{i=1}^N p(x_i|\mu,\sigma^2)$$
 
@@ -301,7 +298,7 @@ $$(1) = \sum_{i=1}^N [-\frac{1}{2}\ln 2\pi -\ln\sigma -\frac{(x_i-\mu)^2}{2\sigm
 
 where **(3)** will be the desired function $f(\mu,\sigma^2)$
 
-#### Maximize the function
+### Maximize the function
 
 The best $\mu$ will be found after deriving the function so:
 
@@ -338,3 +335,73 @@ taking the example before, when we want to generalize the estimation we update t
 Such estimates are asymptotically unbiased and efficient and consistent
 
 ## Bayesian estimation
+
+While in ML we explore the space in order to find the best solution according to our likelihood function which means that $\theta$ is a constant we try to estimate.
+In bayesian estimation, opposed to normal ML estiamtion, we consider $\theta$ as a vector of random variables which are described by a prior density given by the experts of the domain.
+Than we exploit the training examples to get a **posterior distribution**.
+This type of estimation can be applied to parametric problems and it has some basic assumptions:
+
+- The form of the density $p(x|\theta)$ is assumed to be known, but the value of the parameter vector $\theta$ is not known exactly. 
+- Our initial knowledg eabout $\theta$ is assumed to be contained in a known a priori density $p(\theta)$.
+- The rest of our knowledge about $\theta$ is contained in a set $X$ of $N$ samples $x_1,x_2,..., x_N$ drawn independently according to the unknown probability density $p(x)$.
+
+> **Posterior probability distribution**
+>
+> A posterior probability, in Bayesian statistics, is the revised or updated probability of an event occurring after taking into consideration new information. The posterior probability is calculated by updating the prior probability using Bayes' theorem. In statistical terms, the posterior probability is the probability of event A occurring given that event B has occurred.
+>
+> *Bayes theorem Formula*
+> $$ P(A|B) = \frac{P(A\bigcap B)}{P(B)} = \frac{P(A) \times P(B|A)}{P(B)} $$
+
+Since our goal is to estimate our posterior density we'll need to estimate it taking in accoun the traing set given. Formalized it will look like
+
+$$
+\hat{p}={x|X} = \int p(x,\theta|x) d\theta
+$$
+
+where applying the Bayes theorem 
+
+$$
+\hat{p}={x|X} = \int p(x|\theta,X)p(\theta|X) d\theta
+$$
+
+Looking at the first term of the integral it's the density of x given the set of vectors and the training samples. Since we are supposing that we know the set of vectors, having the Training set is completely irrelevant since we ahave all the information we need so we can cut the training set resulting in 
+
+$$
+\hat{p}={x|X} = \int p(x|\theta)p(\theta|X) d\theta
+$$
+
+The first term $p(x|\theta)$ will be the prior assumption we have so we know it analitically. The second term $p(\theta|X)$ will be the posterior density based on $\theta$ since we are deriving all possible $\theta$.
+Since we are in an integral we will sum all the possible models with their relative weights averaging them and we will get the final model.
+
+To do this the basic problem to resolve is computing the posterior density $p(\theta|X)$ applying the Bayes theorem
+
+$$ p(\theta|X) = \frac{p(\theta\bigcap X)}{p(X)} = \frac{p(\theta) p(X|\theta)}{p(X)} $$
+
+where $p(\theta)$ will be the prior density and $p(X|\theta)$ will be the likelihood function. Since we know that the likelihhod is expressed like $\prod_{i=1}^N p(x_i|\theta)$ we can see that the posterior density links the prior density to the likelihood function which is computed on all the examples.
+
+> $p(X)$ is a constant in the process and it's called **marginal likelihood** an its computed like $p(X) = \int p(X,\theta)d\theta = \int p(X|\theta)p(\theta)d\theta$
+
+
+# Nonparametric estimation
+
+Nonparametric estimation becomes necessary when:
+
+- There is no prior knowledge about the functional form of the pdf characterizing the observed phenomenon
+- Parametric models do not offer a good approximation of the considered pdf
+
+Two of the most popular nonparametric estimation models are:
+
+- **K-NN** or **K-Nearest Neighbor** method
+- **Parzen window** method 
+
+## Basic Concepts
+
+We want to estimate the density in a given point of the feature space.
+Let $x*$ be a generic sample and $R$ a predefined region of the feature space such that $x* \in R$. Assuming that the true pdf $p(x)$ is a continuos function (but unknown) we want to compute the probability in that region $R$ so:
+
+$$
+P_R = P\{ x \in R\} = \int_R p(x)dx = p(x^*)V
+$$
+
+where V is the volume of the space R
+
