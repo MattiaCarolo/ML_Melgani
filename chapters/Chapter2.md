@@ -479,3 +479,19 @@ $$
 
 This function simply tells that if the sample x* is in the window it returns 1 otherwise 0.
 Considering a more general volume not centered on origin but on a random sample $x*$ with an edge h, a training sample $x_k$ belongs to $R$ if $\gamma[(x_k-x^*){h}] =1$ otherwise $0$
+
+
+# Kernel
+
+- Rectangular Kernel
+  $$ \gamma (x) = \prod(x) $$
+- Triangular Kernel
+  $$ \gamma (x) = \triangle(x)$$
+- Gaussian Kernel
+  $$ \gamma(x) = \frac{1}{\sqrt(2\pi)} \exp(\frac{x^2}{2}) $$
+- Exponential Kernel
+  $$ \gamma(x) = \frac{1}{2} \exp(-|x|) $$
+- Cauchy Kernel 
+  $$\gamma(x) = \frac{1}{\pi}\times\frac{1}{1+x^2}$$
+- $"sinc^2(.)"$ kernel 
+  $$\gamma(x) = \frac{1}{2\pi}(\frac{\sin(x/2)}{x/2})^2$$
