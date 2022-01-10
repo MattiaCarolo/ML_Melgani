@@ -480,8 +480,36 @@ $$
 This function simply tells that if the sample x* is in the window it returns 1 otherwise 0.
 Considering a more general volume not centered on origin but on a random sample $x*$ with an edge h, a training sample $x_k$ belongs to $R$ if $\gamma[(x_k-x^*){h}] =1$ otherwise $0$
 
+This kind of function turns out to be very useful. We know that
 
-# Kernel
+$$
+p(x) = \frac{K}{NV}, 
+$$
+
+and since in parzen window $V=h^n$ we can replace th $V$ and since we are replacing it in that moment K will be a function over $x$ so
+
+$$
+p(x) = \frac{K}{NV} = \frac{1}{Nh^n} K(x)
+$$
+
+and depending on where we are in the featrure space K will vary its value so we can formalize K(x) as
+
+$$
+\sum_{j=1}^N \gamma \frac{x_j-x^*}{h}
+$$
+
+So we are just summing the number of samples which are in our area. In reality we are not just summing samples but we are interpolating them in order to get a density function which describes them. 
+A problem that could rise is that we are interpolating density function which normally have some constraints which we cannot know by just interpolating. Still since we are averaging through a sum of $\gamma$ which are alreadya density function we can safely interpolate all.
+
+There are additional condition to get a goood estimate which are:
+
+- $\gamma$ takes a maximal value at the origin
+- $\gamma$ is continuous
+- $\gamma \rightarrow 0$ as $x \rightarrow +\infty$
+
+These properties are satisfied in the gaussian kernel.
+
+### Kernel examples
 
 - Rectangular Kernel
   $$ \gamma (x) = \prod(x) $$
@@ -495,3 +523,41 @@ Considering a more general volume not centered on origin but on a random sample 
   $$\gamma(x) = \frac{1}{\pi}\times\frac{1}{1+x^2}$$
 - $"sinc^2(.)"$ kernel 
   $$\gamma(x) = \frac{1}{2\pi}(\frac{\sin(x/2)}{x/2})^2$$
+
+### Bias
+
+We know the density is estimated like 
+$$
+\hat{p}(x) = \frac{1}{NV(h)}*\sum_{i=1}^{N}\gamma \frac{x-x_i}{h}
+$$
+
+We would like to see if this function we got is shifted off our ground truth which is described like
+
+$$
+E\{\hat{p}(x)\} = E\{\frac{1}{NV(h)}*\sum_{i=1}^{N}\gamma \frac{x-x_i}{h}\}=\frac{1}{NV(h)}*\sum_{i=1}^{N}E\{\gamma \frac{x-x_i}{h}\}
+$$
+
+since min 50 spiegazione bias da fare
+
+### **Variance**
+
+Since the observed distribution is the sum of functions of statistically independent random variables, it can be shown that the **estimate variance** is bounded by:
+$$
+E\{\hat{p}(x)-\overline{\hat{p}}((x))^2\} \leq \frac{sup(\gamma(.))\overline{\hat{p}}(x)}{Nh_N^n}
+$$
+
+and going at infinite is consistent if
+
+$$
+\lim _{N\rightarrow +\infty} h_N=0, \lim _{N\rightarrow +\infty} Nh_N^n=+\infty
+$$
+
+### Gaussian kernel
+
+A commonly used kernel in the Parzen window estimation is the **Gaussian kernel with spherical symmetry**(Specht Method) which can be expressed as
+
+$$
+\hat{p}(x)=\frac{1}{N}\sum_{k=1}{N}\frac{1}{(2\pi\sigma^2)^{n/2}} \exp (-\frac{||x-x_k||^{2}}{2\sigma^2})
+$$
+
+The **standard deviation $\sigma$** of the kernel represent thus a smoothing parameter whose setting should be made carefully to avoid both **over** and **under-fitting**
