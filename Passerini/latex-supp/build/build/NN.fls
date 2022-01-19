@@ -1,0 +1,7 @@
+PWD /mnt/sda2/Appunti/ML_Melgani/Passerini/latex-supp/build
+INPUT /etc/texmf/web2c/texmf.cnf
+INPUT /usr/share/texmf/web2c/texmf.cnf
+INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
+INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
+INPUT NN.tex
+OUTPUT /mnt/sda2/Appunti/ML_Melgani/Passerini/latex-supp/build/build/NN.log

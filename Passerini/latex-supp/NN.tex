@@ -1,0 +1,14 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{neuralnetwork}
+\begin{document}
+
+\newcommand{\x}[2]{$x_#2$}
+\newcommand{\y}[2]{$y_#2$}
+\newcommand{\z}[2]{$z_#2$}
+\begin{neuralnetwork}
+  \inputlayer[count=2, bias=false,text=\x]{}
+  \hiddenlayer[count=2, bias= false,text=\y]{} \linklayers
+  \outputlayer[count=1,text=\z]{} \linklayers
+\end{neuralnetwork}
+\end{document}
