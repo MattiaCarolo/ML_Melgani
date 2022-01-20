@@ -83,7 +83,7 @@ and now we take one set of examples made like
 | Bus Late | Overlook |
 |----------|----------|
 
-Obviously the examples havve other features other than the one in the set we took but we can separtely maximize over each table. For this we can focus just on this slice of informations. The complete set will be:
+Obviously the examples can have other features other than the one in the set we took but since we can separately maximize over each table we will take into account only the feature we are interested in. For this we can focus just on this slice of informations. The complete set will be:
 
 | Bus Late | Overlook | $\theta$ value |
 |----------|----------|----------|
