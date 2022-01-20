@@ -258,3 +258,14 @@ $$
 This formula just says to take the expected count from before and divide it by the expected count summing over all possible values $k$ which are the rows of the table. In practice what this formula does is just filling the aftermentioned table with the expected counts and then just normalizes it.
 
 Obviously since the maximiziation step will find a new configuration we will need to reiterate this process until it converges. This will always result in a local optimum of the likelyhood where the $\theta$ won't change anymore.
+
+> We can notice that the formula for the **m-step** is functionally the same as the ML so when we introduce a posterior probability we just sum to the expected counts the relative $\alpha$
+
+## Learning the structure
+
+Up until now we assumed that the structure was given and we just need to learn the parameters but there is even a lot of work in learning the structure itself. To learn them there are two main approaches:
+
+- **constraint-based approach** in which we apply statisctical teston pairs of variables to check it they are directly related according to data. If they look like it we put a link and repeat for all classifiers
+- **score-based approach** works like a search where we define a score for a structure that is basically how well the structure fits the data, and then we move around the structures adding, turning and removing edges in order to find the structure that maximizes the score
+
+### Formulation for learning the structure (EXTRA)
