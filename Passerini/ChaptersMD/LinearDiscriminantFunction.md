@@ -91,7 +91,32 @@ For example in the case of the XOR we can decompose it in
 $$
  x_1 \oplus x_2 = (x_1 \wedge \overline{x_2}) \vee (\overline{x_1} \wedge x_2)
 $$ 
-where the node $y_1$ will take care of learning $(x_1 \wedge \overline{x_2})$, $y_2$ will learn $(\overline{x_1} \wedge x_2)$  and the node will learn the conjuction of the two.
+where the node $y_1$ will take care of learning $(x_1 \wedge \overline{x_2})$, $y_2$ will learn $(\overline{x_1} \wedge x_2)$  and the node $z_1$ will learn the conjuction of the two.
 
-17.2
+## Learning linear models
 
+We already know the formula for the perceptron which is 
+$$
+f(x) = sign(w^Tx)
+$$
+
+but we need first a way to incorporate bias in our formula. To do this we use **augmented vectors** in which we add for both the feature vectors $\hat{x}$ and the weight vector $\hat{w}$ so they are made like
+$$
+\hat{w} = \begin{bmatrix} w_0\\ \bold{w} \end{bmatrix} \hat{x} = \begin{bmatrix} 1\\ \bold{x} \end{bmatrix}
+$$
+
+Now we need to find a function in order to maximize our parameters. One reasonable way to do it is measuring the estimate of the predictor given the ground truth and check whether it's correct or not like
+$$
+E(\bold w, D) = \sum_{(\bold x, y)\in D}l(y, f(\bold x))
+$$
+
+where:
+- $l(y, f(\bold x)$ measures the loss incurred on measuring $f(x)$ opposite to $y$
+- $D$ is our training set
+- $l$ is the loss function
+- $y$ the ground truth
+- $f(\bold{x})$ the prediction given
+
+The problem in minimizing the error of the training set is that we risk that our model **overfits** the data which will result in a problem when we generalize it since other than the distribution the predictor learned even the noise from a particular set.
+
+### Gradient Descent
