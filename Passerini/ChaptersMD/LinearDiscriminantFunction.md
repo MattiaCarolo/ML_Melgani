@@ -235,3 +235,27 @@ $$
 $$
 
 and than we iterate over it
+
+## Multiclass Classification
+
+Last type of linear function is **multiclass classification**. In these cases we got more than one class to distinguish so we can't separate them with only one hyperplane. So to counter we can decompose the problem in multiple sub-problem resolvable with a linear classifier and than we combine the different results.
+
+### One vs All :gun:
+
+Is one way to approach the problem cited before. With this approach we learn a binary classifier for each class:
+
+- in case of a positive example it will belong to the class we are testing;
+- in case of a negative one it will be an example of all the other classes.
+
+So when we will try a new training set we'll pass it to our classifier and than the classifier will predict the class based on the highest confidence it has. Doing this will result in a decision boundary which is composed by pieces of hyperplanes. If we take two different classes $i$ and $j$ where their decision boundary is $f_i(x) = f_j(x)$ we get that
+
+$$
+\begin{aligned}
+\begin{split}
+\mathbf{w}_i^T \mathbf{x} &= \mathbf{w}_j^T \mathbf{x}
+\\
+(\mathbf{w}_i - \mathbf{w}_j)^T \mathbf{x} &= 0
+\\
+\end{split}
+\end{aligned}
+$$
