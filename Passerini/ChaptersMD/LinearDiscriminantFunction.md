@@ -5,6 +5,7 @@ header-includes:
    - \usepackage{cancel}
    - \usepackage{tikz}
    - \usepackage{amsmath}
+   - \usepackage{amsfonts}
    - \usepackage{xcolor}
    - \usepackage{neuralnetwork}
    - \newcommand{\indep}{\perp \!\!\! \perp}
@@ -102,21 +103,135 @@ $$
 
 but we need first a way to incorporate bias in our formula. To do this we use **augmented vectors** in which we add for both the feature vectors $\hat{x}$ and the weight vector $\hat{w}$ so they are made like
 $$
-\hat{w} = \begin{bmatrix} w_0\\ \bold{w} \end{bmatrix} \hat{x} = \begin{bmatrix} 1\\ \bold{x} \end{bmatrix}
+\hat{w} = \begin{bmatrix} w_0\\ \mathbf{w} \end{bmatrix} \hat{x} = \begin{bmatrix} 1\\ \mathbf{x} \end{bmatrix}
 $$
 
 Now we need to find a function in order to maximize our parameters. One reasonable way to do it is measuring the estimate of the predictor given the ground truth and check whether it's correct or not like
 $$
-E(\bold w, D) = \sum_{(\bold x, y)\in D}l(y, f(\bold x))
+E(\mathbf w, D) = \sum_{(\mathbf x, y)\in D}l(y, f(\mathbf x))
 $$
 
 where:
-- $l(y, f(\bold x)$ measures the loss incurred on measuring $f(x)$ opposite to $y$
+- $l(y, f(\mathbf x)$ measures the loss incurred on measuring $f(x)$ opposite to $y$
 - $D$ is our training set
 - $l$ is the loss function
 - $y$ the ground truth
-- $f(\bold{x})$ the prediction given
+- $f(\mathbf{x})$ the prediction given
 
 The problem in minimizing the error of the training set is that we risk that our model **overfits** the data which will result in a problem when we generalize it since other than the distribution the predictor learned even the noise from a particular set.
 
 ### Gradient Descent
+
+|![Gradient Descent](../img/gradientDescent.png "Gradient Descent")|
+|:--:|
+|**Gradient Descent**|
+
+Let's take an error function $E(\mathbf w, D)$ with a single parameter w. Now we want to minimize this error. To do this we take the gradient of the error respect to W and we set it to zero which will result like
+$$
+{\underset{\mathbf{w}}{\nabla E}} (\mathbf w: D) = 0
+$$
+
+if the gradient reaches 0 it means we are either in a minimum or a maximum of the function. What we want is to reiterate this process until we reach a value approximable to zero.
+To do this first we set our $\mathbf w$. Now if we take the derivative (which is represented by the gray arrow) we can see that the result will be an upward arrow due to the gradient which follows the increase of a function so since we want to minimize the error (**NOT** maximizing it) we'll take the opposite direction. Now to find the new $\mathbf w$ we do
+$$
+\mathbf w = \mathbf w- \eta {\underset {\mathbf{w}} {\nabla E} }
+$$
+We can notice that we introduced the new term $\eta$ which refers to the **learning rate** which tells us how much to go in that particular direction given by the gradient.
+
+> Values too large for $\eta$ cam result in a continuous oscillation around the minima without reaching it. Values to small from the other part will result in a slow learning or we could get stuck in a local minima. There are methods to set $\eta$ on the fly 
+
+### Parameter Learning
+
+Now that we have a general understanding of the gradient descent we need to pick an error function to learn the parameter of our model. If we value accuracy we could say that a reasonable error function could be the **missclassification loss** ($1-f(x)$) which is a very sensible measure of the classifier error but it's not good for gradient descent since in the function of the missclassification the only derivative can be zero or null.
+
+Opposite to accuracy we can go for confidence where we use the **confidence loss**, the higher the confidence in the wrong prediction, the higher the result in the function: $\displaystyle E(\mathbf w, D) = \sum_{(\mathbf x, y)\in D_e} -yf(\mathbf x)$. It's important to notice that we are summing a subset of the training data. Infact $D_e$ is just a subset of the current training set in which we took the examples where our classifier was taking wrong predictions. This measure is made like $\displaystyle yf(x) \leq 0$.
+
+Now that we have an error function we can think about the gradient of the function. Applying the gradient we get that
+$$
+\begin{aligned}
+\begin{split}
+  \nabla E(\mathbf w, D) 
+  &= \nabla \sum_{(\mathbf X, y)\in D_E} -yf(x) 
+  \\
+  &= \nabla \sum_{(\mathbf X, y)\in D_E} -y(\mathbf{w}^T\mathbf{x})
+  \\
+  &= \nabla \sum_{(\mathbf X, y)\in D_E} -y\mathbf{x} 
+  \\
+\end{split}
+\end{aligned}
+$$
+
+so the update of $\mathbf w$ at each iteration is $\displaystyle-\eta \nabla E(\mathbf w, D) = \eta \sum_{(\mathbf x, y)\in D_E} -y\mathbf x$ until we reach a zero gradient.
+
+Still a problem rises. If we take a closer look we see that during fradient descent we iterate over all the examples which will result in slow computations in cases where the dataset is really wide. This type of learning is called **batch learning** because everytime we compute the error on the batch of examples we are given
+
+### Stochastic training rule
+
+An alternative is stochastic gradient descent. With this particular approach instead of computing the gradient of the error on all the batch, we make it stochastic by computing it only on a subset of the examples.
+First we initialize the weights randomly and than we iterate until all examples are correctly calssifies. When we meet a wrongly classified sample we immediately update the $\mathbf w$: $\mathbf w \leftarrow \mathbf w + \eta y \mathbf x$
+
+## Perceptron Regression
+
+Let $X$ be a matrix, in which we collect the training examples where $X \in \mathbb R^n \times \mathbb R^d$ with $n$ rows, one for each sample ($n = |D|$), and $d$ columns, one for each feature ($d=|\mathbf x|$).
+Let $\mathbf y\in\mathbb R^n$ be the output training vector where for every $y_i$ is output for $x_i$.
+
+Ath this point we can write linear regression as a set of linear equations where:
+$$
+X\mathbf{w} = \mathbf{y}
+$$
+in order to get the solution
+$$
+\mathbf{w} = \mathbf{y}X^{-1}
+$$
+The problem is that to reach to this particular solution we need $X$ to be invertible which is not always our case. Usually the matrix $X$ is a rectangular matrix with more rows than columns so we have more equations than unknowns sol  no exact solution tipically exists (**overdetermined**). 
+
+> Still this is not a big problem since we don't want to optimize a particular problem but to learn it.
+
+### Mean Squared Error
+
+To address this problem we define an error function and we minimize it. The most common error function for regression is the **mean squared error** where the squared error is the difference between $y$ and $f(\mathbf x)$ where
+$$
+E(\mathbf w, D) = \sum_{(\mathbf x, y)\in D}(y - f(\mathbf x))^2 = (\mathbf y - X \mathbf w)^T(\mathbf y - X \mathbf w)
+$$
+
+For this formula it exists a closed form solution and can be used as a classification loss even if it's not the best. The solution goes like:
+
+$$
+\begin{aligned}
+\begin{split}
+\nabla E (\mathbf{w};D) 
+&= \nabla (\mathbf{y} - X\mathbf{w})^T(\mathbf{y}-X\mathbf{w})
+\\
+&= 2(y - X\mathbf{w})^T(-X) = 0
+\\
+&= -2\mathbf{y}^TX + 2\mathbf{w}^T X^T X = 0
+\\
+\mathbf{w}^T X^T X &= \mathbf{y}^T X
+\\
+X^TX\mathbf{w} &= X^T\mathbf{y}
+\\
+\mathbf{w} &= (X^T X)^{-1} X^T \mathbf{y}
+\\
+\end{split}
+\end{aligned}
+$$
+where in particular:
+- At the second step if we zero we get the third term
+- Now at the 4th step we get that $w$ is tranposed but we need the non transposed value so we transpose all the term the holds $w$ where $\displaystyle (\mathbf{w}^TX^TX)$ becomes $\displaystyle (\mathbf{w}^T)^T (X^TX)^T$  where $\mathbf{w}$ will return to the normal value while the second term will become $(X^T X)$
+
+> Check cheat sheet for further explanation on the solution
+
+Now we can compare the initial formula we got for regression with the one we just found.
+$$
+\mathbf{w} = \mathbf{y}X^{-1} ,||| \mathbf{w} = (X^T X)^{-1} X^T \mathbf{y}
+$$
+
+We can see that the $X^{-1}$ has been replaced for $(X^T X)^{-1} X^T$ which is called pseudoinverse or *left-inverse*. What happens is while the inverse of X doesn't necessarily exist the left inverse always exist since $X^TX$ will always give a squared matrix (still the matrix needs to be invertible). The matrix provided $(X^T X) \in \mathbb{R}^{d\times d}$ dimensions is full rank which means that all the features are independent (in case just remove the redundant ones).
+Note that in the unlikely event that X is invertible this method will return exactly the solution given by the simpler formula.
+
+Still we need to invert the matrix which could become very expensive since we need to invert every feature. For this particular reason we can apply gradient descent and applying it just means we compute the gradient like
+$$
+\nabla (\mathbf{y} - X\mathbf{w})^T(\mathbf{y}-X\mathbf{w}) \Rightarrow 2(y - X\mathbf{w})^T(-X) = 0
+$$
+
+and than we iterate over it
