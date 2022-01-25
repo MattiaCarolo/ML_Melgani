@@ -259,3 +259,55 @@ $$
 \end{split}
 \end{aligned}
 $$
+
+### All Pairs
+
+With this method we train a binary classifier for each pair of classes where:
+
+- positive examples will be from one class
+- negative examples from the other
+
+To see which example the class will belong to we will pick the class with the more number of "duels" won
+
+### One-vs-all vs All-pairs
+
+In _one vs all_ you have to train $m$ classifiers, each with all examples. In _all pairs_ you have to train $\displaystyle\frac{m(m-1)}{2}$ classifiers (order of $m^2$ classifiers), but each one only with the examples of the two classes we are training on.
+
+If the complexity of the training procedure is higher than quadratic in the number of examples, _all pairs_ is faster.
+
+## Generative Linear Classifier
+
+But what about generative model for classification? A number of generative models are linear classifiers.
+
+For example **Gaussian classifier** produces a log linear classifier only if the covariance shared between the classes is the same ($\sum_i = \sum_j$)
+
+Another linear classifier is **Naive Bayes classifier** in which we have the probability of the features given the class times the class itself and if we compute it prduces another linear log classifier.
+
+$$
+\begin{aligned}
+\begin{split}
+f_i(\mathbb x) &= P(\bold x|y_i)P(y_i)
+\\
+&=\prod_{j=1}^{|\bold x|}\prod^{K}_{k=1} \theta^{z_k}_{ky_i}(x[j])\frac{|D_i|}{|D|} 
+\\
+&= \prod^{K}_{k=1} \theta^{N_{k\bold x}}_{ky_i}\frac{|D_i|}{|D|}
+\end{split}
+\end{aligned}
+$$
+
+where in particular:
+
+- when we test features we check for $\displaystyle\prod^K_{k=1} P(x_k|y_i)P(y_i)$. Basically what we did instead of having the probability of the entire set of class we decompose it into the probability of single feature given the class
+- When i take the product over the $K$ features $P(x_i|y_i)$ will become $\displaystyle\theta^{N_{k\bold x}}_{ky_i}$ where $N_{k\mathbf{X}}$ is the number of feature $k$ appears in $\mathbf{x}$
+- $\displaystyle \frac{|D_i|}{|D|}$ is $P(y_i)$
+
+Now if we take the log of the function we get  
+$$
+\log f_i(\bold x) = \underbrace{\sum^{K}_{k=1}N_{k\bold x}\log{\theta_{ky_i}}}_{\bold w^T \bold x'}+\underbrace{\log(\frac{|D_i|}{|D|})}_{w_o}
+$$
+
+where we can see that the product becomes a sum over the features of $N_{k\mathbf{X}}$ times $\log{\theta_{ky_i}}$ plus the second part. Now with this there will be a few consequences:
+
+- we call $\mathbf{x'}$ (it's a postprocessing of x) $N_1\mathbf{x}$ up to $N_k\mathbf{x}$ the frequencies of each of the features ($\bold x' = [N_{1\bold x}...N_{K\bold x}]^T$)
+- we call $\mathbf{w}$ all the $\log \theta$ as the vector of weights ($\bold w = [\log{\theta_{1y_i}}...\log{\theta_{Ky_i}}]^T$)
+  - $w_0$ is the bias (since it doesn’t contain any $\bold x$)
