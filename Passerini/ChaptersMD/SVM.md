@@ -16,7 +16,7 @@ output:
 
 Support Vector Machine, SVM from now on, are linear classifiers that separate using a **large margin classifier** which solution depends only on a small subset of the traing examples called **support vector**. It's very important to note that it has a sound generalization theory (not to study) and they can be easily extended to non linear separation retaining the separation properties thanks to *kernel machines*.
 
-# Maximum margin Classifier & Hard Margin SVM
+# Maximum margin Classifier & Hard Margin SVM 
 
 Let's try to formalize the margin. We already know that $yf(x)$ is the confidence on the correct prediction, if negative the prediction is wrong otherwise if positive correct and the value is the confidence on the prediction. Now suppose we have a classifier that correctly separates with no training errors. If this is the case the minimum value among the training examples is called *confidence margin* and it's written like
 $$
@@ -168,4 +168,53 @@ $$
   \sum_i \alpha_i y_i &= 0
 \end{aligned}
 $$ 
-But still this result is a quadratic optimization problem respect to alpha. In all of this we can see that the beforementioned **primal variables** are missing and replaced with a new pair of variables (the alphas). This new type of formalization is called **dual formulation**
+But still this result is a quadratic optimization problem respect to alpha. In all of this we can see that the beforementioned **primal variables** are missing and replaced with a new pair of variables which will be called **dual variables**(the alphas). This new type of formalization is called **dual formulation**
+
+The result is that $f(\bold x) = \bold w^T \bold x + w_0$ can be written both in form of the primal and of the dual because we know that w is equal to $\displaystyle\bold w = \sum^m_{i=1}\alpha_i y_i \bold x_i$
+
+## Decision fucntion
+
+When we did the gradient with respect to $\mathbf{w}$ previously we got $\displaystyle\bold w = \sum_i \alpha_iy_i \bold x$. Now if we plug it into our f(x) we get that
+$$
+f(\mathbf{x})=\mathbf{w}^T\mathbf{x} + w_0 = \sum_i \alpha_iy_i \mathbf{x}_i^T\mathbf{x} + w_0
+$$
+
+The decision $f(\bold x)$ (defined as **decision function**) on $\bold x$ is basically taken as a linear combination of dot products between training points and $\bold x$, so if $\bold x_i$ is similar to $\bold x$ it will have a high dot product because here the dot product works kind of a similarity between the points. Plus the weights of the combination are $\alpha_i y_i$ where large $\alpha_i$ implies large contribution toward class $y_i$
+
+
+## KKT conditions
+
+To understand wheter a training examples contributes or not to our decision function can be found by appliying KKT. The formulation remains the same so:
+$$
+L(\bold w, w_0, \alpha)=\frac{\|\bold w\|^2}2-\sum^m_{i=1}\alpha_i(y_i(\bold w^T \bold x_i+w_0)-1)
+$$
+
+In the optimal solution  $\displaystyle \alpha_i(y_i(\bold w^T \bold x_i+w_0)-1)$ should be $= 0$, either:
+
+- $\alpha_i = 0$, so the example $\bold x_i$ does not contribute to the final solution
+- if $\alpha_i > 0$ than $y_i(\bold w^T\bold x_i+w_0)=1$, so the confidence for the example should be $1$
+
+Graphically we will achieve something like this:
+
+![SVM.png](../img/SVM.png "SVM ")
+
+In the image the whited out examples are the ones with $\alpha_i = 0$ and they do not contribute to the decision. The examples which contributes to the example are the one in the dotted lines and the hav \alpha_i > 0$ and are examples for which $y_i(\bold w^T\bold x_i+w_0)=1$. Still the dotted lines are the confidence 1 hyperplanes. These minimal confidence hyperplanes called **support vectors**. All others do not contribute in any way to our decision. SVM are *sparse* which means that they have few support vectors.
+
+Now if we take a step back we know that our $f(x)$ is formed as $w^Tx + w_0$. While we found how to compute the first term we still to resolve how to compute the bias
+
+### KKT bias
+
+To compute the bias we can still use the KKT solution we reached before. Given the KKT has found an optimal solution we know that $y_i(\bold w^T\bold x_i+w_0)=1$ must be complied. Fact is we know already that this condition is satisfied so we can just resolve the equation computing for $w_0$ where
+$$
+  y_i(\bold w^T\bold x_i+w_0)=1
+  \\
+  y_i\bold w^T\bold x_i+y_iw_0=1
+  \\
+  w_0 = \frac{1-y_iw^Tx_i}{y_i}
+$$
+
+> Usually for numerical robustness we compute the bias over all support vectors
+
+# Soft Margin
+
+Until now we just talked about Hard Margin
