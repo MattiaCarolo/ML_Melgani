@@ -20,12 +20,12 @@ Support Vector Machine, SVM from now on, are linear classifiers that separate us
 
 Let's try to formalize the margin. We already know that $yf(x)$ is the confidence on the correct prediction, if negative the prediction is wrong otherwise if positive correct and the value is the confidence on the prediction. Now suppose we have a classifier that correctly separates with no training errors. If this is the case the minimum value among the training examples is called *confidence margin* and it's written like
 $$
-\rho = \min_{(\bold x, y)\in D}yf(\bold x)
+\rho = \min_{(\mathbf x, y)\in D}yf(\mathbf x)
 $$
 
 Since it depends on $w$ we can compute the distance from the minimal distance to our classifier and it's called **geometric margin** which is formalized like 
 $$
-\frac{\rho}{\|\bold w\|} = \min_{(\bold x, y)\in D}\frac{yf(\bold x)}{\|\bold w\|}
+\frac{\rho}{\|\mathbf w\|} = \min_{(\mathbf x, y)\in D}\frac{yf(\mathbf x)}{\|\mathbf w\|}
 $$
 
 Ideally we want to maximize the last formula in order to get $w$ in order to maximize the margin. However if we put in an optimization problem we have actually one degree of freedom that is being removed. Suppose we have a solution where
@@ -37,9 +37,9 @@ now if we want to characterize further the plane we can, for example, multiply t
 
 We can counter this problem through the introduction of the *canonical hyperplane* in which we set the constraint that $\rho$ must be equal to a number given a priori (in our case we take 1) in order to get:
 $$
-\rho = \min_{(\bold x, y)\in D}yf(\bold x) =1
+\rho = \min_{(\mathbf x, y)\in D}yf(\mathbf x) =1
 $$
-and it's geometric margin will be $\displaystyle \frac{\rho}{\|\bold w\|} =\frac{1}{\|\bold w\|}$
+and it's geometric margin will be $\displaystyle \frac{\rho}{\|\mathbf w\|} =\frac{1}{\|\mathbf w\|}$
 
 > the numerical value in the geometric margin must match
 
@@ -77,9 +77,9 @@ The probability of test error so depends on:
 
 - $R$ is the radius of the space containing all the samples
 
-- larger the margin $\rho$, the smaller test error (so we want the margin $\displaystyle\frac 2{\|\bold w\|}$ to be large)
+- larger the margin $\rho$, the smaller test error (so we want the margin $\displaystyle\frac 2{\|\mathbf w\|}$ to be large)
 
-  if $\rho$ is fixed to 1, maximizing margin corresponds to minimizing $||\bold w||$
+  if $\rho$ is fixed to 1, maximizing margin corresponds to minimizing $||\mathbf w||$
 
 - $c$ is a constant
 
@@ -123,7 +123,7 @@ where :
   
 By substituiting the new obtained terms we get
 $$
-L(\bold w, w_0, \alpha)=\frac{\|\bold w\|^2}2-\sum^m_{i=1}\alpha_i(y_i(\bold w^T \bold x_i+w_0)-1)
+L(\mathbf w, w_0, \alpha)=\frac{\|\mathbf w\|^2}2-\sum^m_{i=1}\alpha_i(y_i(\mathbf w^T \mathbf x_i+w_0)-1)
 $$
 
 > m = |D|
@@ -135,14 +135,14 @@ This lagrangian should be ninimized with respect to $\mathbf{w}$ and $w_0$ and m
 Going further with the calculus we get that
 
 $$
-L(\bold w, w_0, \alpha)=\frac{\|\bold w\|^2}2-\sum^m_{i=1}\alpha_i(y_i(\bold w^T \bold x_i+w_0)-1)
+L(\mathbf w, w_0, \alpha)=\frac{\|\mathbf w\|^2}2-\sum^m_{i=1}\alpha_i(y_i(\mathbf w^T \mathbf x_i+w_0)-1)
 $$
 
-which is our lagrangian. Now we want to minimize with respect to $\bold w, w_0$ and maximize with respect to $\alpha$. We are interested in computing the gradient respect to our **primal variables** $\mathbf{w}$ and $w_0$
+which is our lagrangian. Now we want to minimize with respect to $\mathbf w, w_0$ and maximize with respect to $\alpha$. We are interested in computing the gradient respect to our **primal variables** $\mathbf{w}$ and $w_0$
 
-So we take $\displaystyle\nabla_\bold w L=\nabla_\bold w \frac{\bold w^T \bold w}{2}-\nabla_\bold w \sum_i \alpha_iy_i\bold w^T \bold x = \frac{\not 2\bold w}{\not 2}-\sum_i \alpha_iy_i \bold x$
+So we take $\displaystyle\nabla_\mathbf w L=\nabla_\mathbf w \frac{\mathbf w^T \mathbf w}{2}-\nabla_\mathbf w \sum_i \alpha_iy_i\mathbf w^T \mathbf x = \frac{\not 2\mathbf w}{\not 2}-\sum_i \alpha_iy_i \mathbf x$
 
-and now we set $\displaystyle\bold w-\sum_i \alpha_iy_i \bold x = 0$ getting $\displaystyle\bold w = \sum_i \alpha_iy_i \bold x$, but this is not the solution because $\bold w$ is defined in terms of $\alpha$
+and now we set $\displaystyle\mathbf w-\sum_i \alpha_iy_i \mathbf x = 0$ getting $\displaystyle\mathbf w = \sum_i \alpha_iy_i \mathbf x$, but this is not the solution because $\mathbf w$ is defined in terms of $\alpha$
 
 Than we can also take the derivative in order to get
 $$
@@ -170,45 +170,45 @@ $$
 $$ 
 But still this result is a quadratic optimization problem respect to alpha. In all of this we can see that the beforementioned **primal variables** are missing and replaced with a new pair of variables which will be called **dual variables**(the alphas). This new type of formalization is called **dual formulation**
 
-The result is that $f(\bold x) = \bold w^T \bold x + w_0$ can be written both in form of the primal and of the dual because we know that w is equal to $\displaystyle\bold w = \sum^m_{i=1}\alpha_i y_i \bold x_i$
+The result is that $f(\mathbf x) = \mathbf w^T \mathbf x + w_0$ can be written both in form of the primal and of the dual because we know that w is equal to $\displaystyle\mathbf w = \sum^m_{i=1}\alpha_i y_i \mathbf x_i$
 
 ## Decision fucntion
 
-When we did the gradient with respect to $\mathbf{w}$ previously we got $\displaystyle\bold w = \sum_i \alpha_iy_i \bold x$. Now if we plug it into our f(x) we get that
+When we did the gradient with respect to $\mathbf{w}$ previously we got $\displaystyle\mathbf w = \sum_i \alpha_iy_i \mathbf x$. Now if we plug it into our f(x) we get that
 $$
 f(\mathbf{x})=\mathbf{w}^T\mathbf{x} + w_0 = \sum_i \alpha_iy_i \mathbf{x}_i^T\mathbf{x} + w_0
 $$
 
-The decision $f(\bold x)$ (defined as **decision function**) on $\bold x$ is basically taken as a linear combination of dot products between training points and $\bold x$, so if $\bold x_i$ is similar to $\bold x$ it will have a high dot product because here the dot product works kind of a similarity between the points. Plus the weights of the combination are $\alpha_i y_i$ where large $\alpha_i$ implies large contribution toward class $y_i$
+The decision $f(\mathbf x)$ (defined as **decision function**) on $\mathbf x$ is basically taken as a linear combination of dot products between training points and $\mathbf x$, so if $\mathbf x_i$ is similar to $\mathbf x$ it will have a high dot product because here the dot product works kind of a similarity between the points. Plus the weights of the combination are $\alpha_i y_i$ where large $\alpha_i$ implies large contribution toward class $y_i$
 
 
 ## KKT conditions
 
 To understand wheter a training examples contributes or not to our decision function can be found by appliying KKT. The formulation remains the same so:
 $$
-L(\bold w, w_0, \alpha)=\frac{\|\bold w\|^2}2-\sum^m_{i=1}\alpha_i(y_i(\bold w^T \bold x_i+w_0)-1)
+L(\mathbf w, w_0, \alpha)=\frac{\|\mathbf w\|^2}2-\sum^m_{i=1}\alpha_i(y_i(\mathbf w^T \mathbf x_i+w_0)-1)
 $$
 
-In the optimal solution  $\displaystyle \alpha_i(y_i(\bold w^T \bold x_i+w_0)-1)$ should be $= 0$, either:
+In the optimal solution  $\displaystyle \alpha_i(y_i(\mathbf w^T \mathbf x_i+w_0)-1)$ should be $= 0$, either:
 
-- $\alpha_i = 0$, so the example $\bold x_i$ does not contribute to the final solution
-- if $\alpha_i > 0$ than $y_i(\bold w^T\bold x_i+w_0)=1$, so the confidence for the example should be $1$
+- $\alpha_i = 0$, so the example $\mathbf x_i$ does not contribute to the final solution
+- if $\alpha_i > 0$ than $y_i(\mathbf w^T\mathbf x_i+w_0)=1$, so the confidence for the example should be $1$
 
 Graphically we will achieve something like this:
 
 ![SVM.png](../img/SVM.png "SVM ")
 
-In the image the whited out examples are the ones with $\alpha_i = 0$ and they do not contribute to the decision. The examples which contributes to the example are the one in the dotted lines and the hav \alpha_i > 0$ and are examples for which $y_i(\bold w^T\bold x_i+w_0)=1$. Still the dotted lines are the confidence 1 hyperplanes. These minimal confidence hyperplanes called **support vectors**. All others do not contribute in any way to our decision. SVM are *sparse* which means that they have few support vectors.
+In the image the whited out examples are the ones with $\alpha_i = 0$ and they do not contribute to the decision. The examples which contributes to the whole examples are the one in the dotted lines and they have $\alpha_i > 0$ and are examples for which $y_i(\mathbf w^T\mathbf x_i+w_0)=1$. Still the dotted lines are the confidence 1 hyperplanes. These minimal confidence hyperplanes called **support vectors**. All others do not contribute in any way to our decision. SVM are *sparse* which means that they have few support vectors.
 
 Now if we take a step back we know that our $f(x)$ is formed as $w^Tx + w_0$. While we found how to compute the first term we still to resolve how to compute the bias
 
 ### KKT bias
 
-To compute the bias we can still use the KKT solution we reached before. Given the KKT has found an optimal solution we know that $y_i(\bold w^T\bold x_i+w_0)=1$ must be complied. Fact is we know already that this condition is satisfied so we can just resolve the equation computing for $w_0$ where
+To compute the bias we can still use the KKT solution we reached before. Given the KKT has found an optimal solution we know that $y_i(\mathbf w^T\mathbf x_i+w_0)=1$ must be complied. Fact is we know already that this condition is satisfied so we can just resolve the equation computing for $w_0$ where
 $$
-  y_i(\bold w^T\bold x_i+w_0)=1
+  y_i(\mathbf w^T\mathbf x_i+w_0)=1
   \\
-  y_i\bold w^T\bold x_i+y_iw_0=1
+  y_i\mathbf w^T\mathbf x_i+y_iw_0=1
   \\
   w_0 = \frac{1-y_iw^Tx_i}{y_i}
 $$
@@ -217,4 +217,134 @@ $$
 
 # Soft Margin
 
-Until now we just talked about Hard Margin
+Until now we just talked about Hard Margin but it has some problems. When we learn a model with the hard margin it could happen that the confidence margin can be too narrow since we are just optimizing the problem to find a solution. With **soft margin** opposite to the hard, we tolerate some errors in order to reach a wide margin. To obtain this we introduce something called **slack variable** in the constraints in order to reach something like:
+$$
+\begin{aligned}
+  \min_{\mathbf{w},w_0}  &\quad \frac{||\mathbf{w}||^2}{2} 
+  \\
+  \text{s.t.} &\quad y_i(\mathbf{w}^Tx_i + w_0) \geq 1- \xi_i
+\end{aligned}
+$$
+
+The $\xi_i$ will bw our **slack variables** which must be $\geq 0$ where:
+
+- if $\xi_i$ will be equal to 0 than the constraint should be hard satisfied;
+- if $\xi_i$ will be greater than 0 than the confidence will be lower than 1 depending on the value of the slack variable itself.
+  
+Since we want to pay the use of this variable we add a sum to the term which will be minimized (ideally want the sum of $\xi_i$ to be as low as possible since we are trying to minimize) to get 
+
+$$
+\min_{\mathbf{w},w_0}  \quad \frac{||\mathbf{w}||^2}{2} + \sum_i \xi_i
+$$
+
+Now the min term it's a combination of two components we introduce a coefficient called **regularization term** ($C$ which is a hyperparameter) to give a measure of tradeoff between them. In particular the first component will be the one related to the **margin** while the second will be the **fitting of the training set** meaning how much the training examples satisfy the confidence 1 requirement.
+
+$$
+\min_{\mathbf{w},w_0}  \quad \frac{||\mathbf{w}||^2}{2} + C\sum_i \xi_i
+$$
+
+The full formalization will be like
+$$
+\begin{aligned}
+  \min_{\mathbf w\in X, w_0\in\R,\xi\in\R^m} &\quad \frac12\|\mathbf w\|^2+C\sum_{i=1}^m\xi_i
+  \\
+  \text{ subject to} &\quad y_i(\mathbf w^T\mathbf x_i+w_0)\ge1-\xi_i,\quad i=1,...,m
+  \\
+  \xi_i\ge0,&\quad i=1,...,m
+\end{aligned}
+$$
+
+## Regularization theory
+The concept of having a margin and a fitting of the training data is an instance of a more genral framework for statistical learning which is called **regularization theory** which basically suggests that we should combine when we learn, a component which penalizes complex solution or encourages generalization with a term that encourages fitting of the training examples
+$$
+\min_{\mathbf w\in X, w_0\in\R,\xi\in\R^m}\quad \frac12\|\mathbf w\|^2+C\sum_{i=1}^m l(y_i,f(\mathbf x_i))
+$$
+
+In this case $l$ is a loss function that tells how much we pay for a missclassification and is basically our slack variables
+
+### Hinge loss
+
+Now that we know that our slack variable is the loss function we can establish that $\xi_i = l(y_i, f(\mathbf x_i))$. Rewriting the possible values $\xi_i$ can have we get that
+$$
+\xi_i =
+\begin{cases}
+0 \quad \text{if} \quad y_if(x_i) \geq 1
+\\
+1 - y_if(x_i) \geq 1 \quad \text{otherwise}
+\end{cases}
+$$
+
+we get that
+
+$$
+l(y_i, f(\mathbf x_i)) = |1-y_if(\mathbf{x}_i)|_+= |1-y_i(\mathbf w^T \mathbf x_i+w_0)|_+\\
+$$
+
+The plus means that the value must be 0 if the content is negative. Through this formalization we zero every value of $yf(x)$ if it is greater than 1. This function is called **hinge loss** and it's made in order to:
+
+- where the confidence is more than 1 we don't pay anything
+- where is lower tha 1 we pay linearly
+
+#### Set hyperparameter C
+
+Still we need to set our C. To do this we do the **cross validation procedure** where we have our training set and the supervised examples called validation set and we evaluate subsets of example to test our model. We will train with different C in order to get the best results
+
+## Dual Regularization formulation
+
+We already said that for optimization problems we can resort to the Lagrangian with the hard margin case. The same thing could be done for soft margins addisng some tweaks where it will result like
+
+$$
+ L=C\sum_{i}\xi_i+\frac12||\mathbf w||^2-\sum_{i}\alpha_i(y_i(\mathbf w^T\mathbf x_i+w_0)-1+\xi_i)-\sum_{i}\beta_i\xi_i
+$$
+
+$\beta_i$ is the **Lagrange multiplier** for the constraint $\xi_i \ge 0$. Now we need to semplify this by doing the gradient
+
+$$
+\nabla_w L =\mathbf w -\sum_i\alpha_i y_i \mathbf x_i\to\mathbf w = \sum_i\alpha_i y_i \mathbf x_i
+$$
+we can see that until now nothing changes form the previous formulation for the hard margin. Also for the derivative of $w_0$ nothing changes ($\displaystyle\frac{\delta L}{\delta w_0} \to \sum_ i \alpha_i y_i=0$)
+
+But with respect to the hard margin we got a new set of primal variables which are the slack variables. We want to minimize even for them so we can take the derivative of the lagrangian wrt the slack variables
+$$
+\frac{\delta L}{\delta \xi_i}=0\to C-\alpha_i-\beta_i=0
+$$
+
+In the end, substituting in the _Lagrangian_ we get: $\displaystyle L(\alpha)=\sum_{i-1}^m\alpha_i-\frac12\sum_{i,j+1}^m\alpha_i\alpha_jy_iy_j\mathbf x^T_i\mathbf x_j$
+
+So the **dual formulation** is
+$$
+\begin{aligned}
+  \max_{\alpha\in\R^m} &\quad \sum_{i-1}^m \alpha_i-\frac12\sum_{i,j=1}^m\alpha_i\alpha_jy_iy_j\mathbf x^T_i\mathbf x_j
+  \\
+\text{ subject to:} &\quad 0\le\alpha_i\le C
+\\
+ &\quad\sum_{i=1}^m\alpha_iy_i=0
+
+\end{aligned}
+$$
+
+> **FULL DUAL FORMULATION**
+> 
+> $0\le\alpha_i\le C$ is a derivation from different constraints which are $\alpha_i \geq 0, \beta_i \geq 0, C-\alpha_i-\beta_i=0$
+
+Different from hard margin SVM because $\alpha$ is upper-bounded by $C$
+
+### Support vector soft margin
+
+In the Lagrangian, when we get to the saddle point, the result $\forall i$ is 
+$$
+\alpha_i(y_i(\mathbf w^T\mathbf x_i+w_0)-1+\xi_i=0
+\\
+\beta_i\xi_i=0
+$$
+
+thus, _support vectors_ (where $\alpha_i > 0$) are examples for which is $y_i(\mathbf w^T\mathbf x_i+w_0)\le1$ otherwise our $\alpha$ would be equal to 0. So the support vectors are the ones where the confidence is one or less depending on whether $\xi$ is equal to 0 or not. If:
+
+- $\xi = 0$ than $y_if(x_i) = 1$
+- otherwise smaller
+
+When $\alpha_i<C$, $\beta_i > 0$ and then of course $\xi_i = 0$: these support vectors are called **unbound SV**, because they stay in the confidence $= 1$ hyperplane ($y_if(\mathbf x_i) = y_i(\mathbf w^T\mathbf x_i+w_0) = 1$)
+
+If $\alpha_i = C$, we need to satisfy this condition  they are called **bound SV**, and then $\xi_i$ can be greater than zero:  in such case the SV are _margin errors_.
+
+Margin errors can be also _training errors_ if they are in the wrong side of the hyperplane.
