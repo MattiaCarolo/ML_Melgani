@@ -367,7 +367,7 @@ In the end, substituting in the _Lagrangian_ we get: $\displaystyle L(\alpha)=\s
 
 So the **dual formulation** is
 $$
-\displaystyle \max_{\alpha\in\R^m}\quad \sum_{i-1}^m\alpha_i-\frac12\sum_{i,j=1}^m\alpha_i\alpha_jy_iy_j\bold x^T_i\bold x_j\\
+\displaystyle \max_{\alpha\in\R^m}\quad \sum_{i-1}^m\alpha_i-\frac12\sum_{i,j=1}^m\a    lpha_i\alpha_jy_iy_j\bold x^T_i\bold x_j\\
 \text{ subject to}\quad 0\le\alpha_i\le C, \quad i=1,...,m\\
 \sum_{i=1}^m\alpha_iy_i=0
 $$
