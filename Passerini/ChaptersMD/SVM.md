@@ -53,9 +53,9 @@ First of all we want to maximize the margin so $\displaystyle \frac{2}{||\mathbf
 $$
 \text{max} \frac{2}{||\mathbf{w}||}\space 
 \\
- \text{s.t.}\\\forall x_i:y_i = 1 \mathbb{R}ightarrow \mathbf{w}^T x_i + w_0 \geq 1 
+ \text{s.t.}\\\forall x_i:y_i = 1 \Rightarrow \mathbf{w}^T x_i + w_0 \geq 1 
  \\\And \\
- \forall x_i:y_i = -1 \mathbb{R}ightarrow \mathbf{w}^T x_i + w_0 \leq -1 
+ \forall x_i:y_i = -1 \Rightarrow \mathbf{w}^T x_i + w_0 \leq -1 
 $$
 
 and the term to maximize can be inverted in order to get 
