@@ -20,12 +20,12 @@ Support Vector Machine, SVM from now on, are linear classifiers that separate us
 
 Let's try to formalize the margin. We already know that $yf(x)$ is the confidence on the correct prediction, if negative the prediction is wrong otherwise if positive correct and the value is the confidence on the prediction. Now suppose we have a classifier that correctly separates with no training errors. If this is the case the minimum value among the training examples is called *confidence margin* and it's written like
 $$
-\rho = \min_{(\mathbf x, y)\in D}yf(\mathbf x)
+\mathbb{R} = \min_{(\mathbf x, y)\in D}yf(\mathbf x)
 $$
 
 Since it depends on $w$ we can compute the distance from the minimal distance to our classifier and it's called **geometric margin** which is formalized like 
 $$
-\frac{\rho}{\|\mathbf w\|} = \min_{(\mathbf x, y)\in D}\frac{yf(\mathbf x)}{\|\mathbf w\|}
+\frac{\mathbb{R}}{\|\mathbf w\|} = \min_{(\mathbf x, y)\in D}\frac{yf(\mathbf x)}{\|\mathbf w\|}
 $$
 
 Ideally we want to maximize the last formula in order to get $w$ in order to maximize the margin. However if we put in an optimization problem we have actually one degree of freedom that is being removed. Suppose we have a solution where
@@ -35,17 +35,17 @@ $$
 
 now if we want to characterize further the plane we can, for example, multiply the terms with an $\alpha \neq 0$ and still we will return to a formula that look like before since we can incorporate the $\alpha$ in our formalization. This is because there is an infinite number of equivalent formulation for the same hyperplane even with different parameters.
 
-We can counter this problem through the introduction of the *canonical hyperplane* in which we set the constraint that $\rho$ must be equal to a number given a priori (in our case we take 1) in order to get:
+We can counter this problem through the introduction of the *canonical hyperplane* in which we set the constraint that $\mathbb{R}$ must be equal to a number given a priori (in our case we take 1) in order to get:
 $$
-\rho = \min_{(\mathbf x, y)\in D}yf(\mathbf x) =1
+\mathbb{R} = \min_{(\mathbf x, y)\in D}yf(\mathbf x) =1
 $$
-and it's geometric margin will be $\displaystyle \frac{\rho}{\|\mathbf w\|} =\frac{1}{\|\mathbf w\|}$
+and it's geometric margin will be $\displaystyle \frac{\mathbb{R}}{\|\mathbf w\|} =\frac{1}{\|\mathbf w\|}$
 
 > the numerical value in the geometric margin must match
 
-![MLClassifier.png](../img/MLClassifier.png "Hello Moto")
+<img src="../img/MLClassifier.png" alt="drawing" width ="300px"/>
 
-As we can see from the image above the two dotted lines are the two canonical hyperplanes with their $\rho$ set to 1 so summing their respective geometric margin we get that the total geometric margin is equal to $\displaystyle \frac{2}{||\mathbf{w}||}$.
+As we can see from the image above the two dotted lines are the two canonical hyperplanes with their $\mathbb{R}$ set to 1 so summing their respective geometric margin we get that the total geometric margin is equal to $\displaystyle \frac{2}{||\mathbf{w}||}$.
 
 We can take this and convert it to an optimization problem.
 
@@ -53,9 +53,9 @@ First of all we want to maximize the margin so $\displaystyle \frac{2}{||\mathbf
 $$
 \text{max} \frac{2}{||\mathbf{w}||}\space 
 \\
- \text{s.t.}\\\forall x_i:y_i = 1 \Rightarrow \mathbf{w}^T x_i + w_0 \geq 1 
+ \text{s.t.}\\\forall x_i:y_i = 1 \mathbb{R}ightarrow \mathbf{w}^T x_i + w_0 \geq 1 
  \\\And \\
- \forall x_i:y_i = -1 \Rightarrow \mathbf{w}^T x_i + w_0 \leq -1 
+ \forall x_i:y_i = -1 \mathbb{R}ightarrow \mathbf{w}^T x_i + w_0 \leq -1 
 $$
 
 and the term to maximize can be inverted in order to get 
@@ -67,7 +67,7 @@ which is not a quadratic function but it's monotonic so if we found a maximum it
 
 ## Margin Error Bound (just a citation not study material)
 
-**Margin Error Bound**: $\nu +\sqrt{\displaystyle{\frac cm(\frac{R^2\bigwedge^2}{\rho^2}\ln^2m+\ln(\frac1\delta))}}$
+**Margin Error Bound**: $\nu +\sqrt{\displaystyle{\frac cm(\frac{R^2\bigwedge^2}{\mathbb{R}^2}\ln^2m+\ln(\frac1\delta))}}$
 
 The probability of test error so depends on:
 
@@ -77,9 +77,9 @@ The probability of test error so depends on:
 
 - $R$ is the radius of the space containing all the samples
 
-- larger the margin $\rho$, the smaller test error (so we want the margin $\displaystyle\frac 2{\|\mathbf w\|}$ to be large)
+- larger the margin $\mathbb{R}$, the smaller test error (so we want the margin $\displaystyle\frac 2{\|\mathbf w\|}$ to be large)
 
-  if $\rho$ is fixed to 1, maximizing margin corresponds to minimizing $||\mathbf w||$
+  if $\mathbb{R}$ is fixed to 1, maximizing margin corresponds to minimizing $||\mathbf w||$
 
 - $c$ is a constant
 
@@ -246,7 +246,7 @@ $$
 The full formalization will be like
 $$
 \begin{aligned}
-  \min_{\mathbf w\in X, w_0\in\R,\xi\in\R^m} &\quad \frac12\|\mathbf w\|^2+C\sum_{i=1}^m\xi_i
+  \min_{\mathbf{w} \in X, w_0 \in \mathbb{R}, \xi \in \mathbb{R}^m} &\quad \frac{1}{2} \|\mathbf{w} \|^2 + C\sum_{i=1}^m\xi_i
   \\
   \text{ subject to} &\quad y_i(\mathbf w^T\mathbf x_i+w_0)\ge1-\xi_i,\quad i=1,...,m
   \\
@@ -257,7 +257,7 @@ $$
 ## Regularization theory
 The concept of having a margin and a fitting of the training data is an instance of a more genral framework for statistical learning which is called **regularization theory** which basically suggests that we should combine when we learn, a component which penalizes complex solution or encourages generalization with a term that encourages fitting of the training examples
 $$
-\min_{\mathbf w\in X, w_0\in\R,\xi\in\R^m}\quad \frac12\|\mathbf w\|^2+C\sum_{i=1}^m l(y_i,f(\mathbf x_i))
+\min_{\mathbf w\in X, w_0\in\mathbb{R},\xi\in\mathbb{R}^m}\quad \frac12\|\mathbf w\|^2+C\sum_{i=1}^m l(y_i,f(\mathbf x_i))
 $$
 
 In this case $l$ is a loss function that tells how much we pay for a missclassification and is basically our slack variables
@@ -314,12 +314,11 @@ In the end, substituting in the _Lagrangian_ we get: $\displaystyle L(\alpha)=\s
 So the **dual formulation** is
 $$
 \begin{aligned}
-  \max_{\alpha\in\R^m} &\quad \sum_{i-1}^m \alpha_i-\frac12\sum_{i,j=1}^m\alpha_i\alpha_jy_iy_j\mathbf x^T_i\mathbf x_j
+\max_{\alpha\in\mathbb{R}^m} &\quad \sum_{i-1}^m \alpha_i-\frac12\sum_{i,j=1}^m\alpha_i\alpha_jy_iy_j\mathbf x^T_i\mathbf x_j
   \\
 \text{ subject to:} &\quad 0\le\alpha_i\le C
 \\
  &\quad\sum_{i=1}^m\alpha_iy_i=0
-
 \end{aligned}
 $$
 
@@ -362,13 +361,13 @@ $$
 Than instead of having a C what happens if u have a lot of examples is that the total loss depends even on the number of examples so we divide it by the number of the examples themselves in order to get $C= \frac{1}{m}$. In order to have full fidelity to the original algorithm there is a $\lambda$ which basing on recording is not very important idk so the final result would be
 
 $$
-  \min_{\mathbf w \in X}\frac{\lambda\|\mathbf w\|^2}2+ \frac{1}{m}\sum_{i=1}^m|1-y_i\langle\mathbf w, \mathbf x_i\rangle|_+
+  \min_{\mathbf w \in X}\frac{\lambda\|\mathbf w\|^2}2+ \frac{1}{m}\sum_{i=1}^m|1-y_i\langle\mathbf w, \mathbf x_i\mathbb{R}angle|_+
 $$
 
 Now we want to do the stochastic gradient descent. To do this (recap only) we take the error function for the single example, we compute the gradient , then we update it and we move to the next example. So at first we have
 
 $$
-E(\mathbf{w};(x_i,y_i)) = \frac{\lambda}{2}||\mathbf w||^2+|1-y_i\langle\mathbf w,\mathbf x_i\rangle|_+
+E(\mathbf{w};(x_i,y_i)) = \frac{\lambda}{2}||\mathbf w||^2+|1-y_i\langle\mathbf w,\mathbf x_i\mathbb{R}angle|_+
 $$
 
 > Here we dont care about bias since it's not very relevant due to the number of features
@@ -380,18 +379,18 @@ Now we want to compute the gradient but if we remember the hinge loss function i
 The way of formally doing this is to apply an indicator function like
 
 $$
-\mathbb{1} [y_1\langle\mathbf w, \mathbf x_i\rangle<1]= 
+\mathbb{1} [y_1\langle\mathbf w, \mathbf x_i\mathbb{R}angle<1]= 
 \begin{cases}
-  1 &\text{if }y_i\langle\mathbf w, \mathbf x_i\rangle <1 
+  1 &\text{if }y_i\langle\mathbf w, \mathbf x_i\mathbb{R}angle <1 
   \\ 
   0 &\text{otherwise}
 \end{cases}
 $$
 
-and computing the gradient in the part where $\displaystyle y_i\langle\mathbf w, \mathbf x_i\rangle <1$ gives as a result $y_i x_i$. So plugging it in our gradient step we get
+and computing the gradient in the part where $\displaystyle y_i\langle\mathbf w, \mathbf x_i\mathbb{R}angle <1$ gives as a result $y_i x_i$. So plugging it in our gradient step we get
 
 $$
-  \nabla_{\mathbf x}E(\mathbf w, (\mathbf x_i, y_i))=\lambda\mathbf w-\mathbb1[y_1\langle\mathbf w, \mathbf x_i\rangle<1]y_i\mathbf x_i
+  \nabla_{\mathbf x}E(\mathbf w, (\mathbf x_i, y_i))=\lambda\mathbf w-\mathbb1[y_1\langle\mathbf w, \mathbf x_i\mathbb{R}angle<1]y_i\mathbf x_i
 $$
 where if the confidence is lower than one than we will apply $x_i y_i$ otherwise it will be 0.
 
@@ -411,5 +410,5 @@ The algorithm to do the large scale learning is called _Pegasus_ which goes like
 
 
 
-The _learning rate_ is not static, it’s an **adaptive learning rate** that decreases with $t$: The choice of the learning rate allows to bound the runtime for an $\epsilon$-accurate solution to $\Omicron(d/\lambda\epsilon)$ with $d$ maximum number of non-zero features in an example (guarantees accuracy of solution)
+The _learning rate_ is not static, it’s an **adaptive learning rate** that decreases with $t$: The choice of the learning rate allows to bound the runtime for an $\epsilon$-accurate solution to $\mathbb{O}(\frac{d}{\lambda\epsilon})$ with $d$ maximum number of non-zero features in an example (guarantees accuracy of solution)
 
