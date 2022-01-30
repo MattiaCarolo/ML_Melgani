@@ -365,45 +365,51 @@ $$
   \min_{\mathbf w \in X}\frac{\lambda\|\mathbf w\|^2}2+ \frac{1}{m}\sum_{i=1}^m|1-y_i\langle\mathbf w, \mathbf x_i\rangle|_+
 $$
 
-Now if we want to to the stochastic gradient descent. To do this (recap only) we take the error function for the single example, we compute the gradient , then we update it and we move to the next example. So at first we have
+Now we want to do the stochastic gradient descent. To do this (recap only) we take the error function for the single example, we compute the gradient , then we update it and we move to the next example. So at first we have
 
 $$
-E(\mathbf{w};(x_i,y_i)) = \frac{\lambda}{2}||\mathbf w||^2+\frac1m\sum_{i=1}^m|1-y_i\langle\mathbf w,\mathbf x_i\rangle|_+
+E(\mathbf{w};(x_i,y_i)) = \frac{\lambda}{2}||\mathbf w||^2+|1-y_i\langle\mathbf w,\mathbf x_i\rangle|_+
 $$
 
 > Here we dont care about bias since it's not very relevant due to the number of features
 
-and changing $\displaystyle\frac mC =\lambda$ we have the _stochastic gradient descent_: $\displaystyle\min_{\mathbf w \in X}\frac{\lambda}{2}||\mathbf w||^2+\frac1m\sum_{i=1}^m|1-y_i\langle\mathbf w,\mathbf x_i\rangle|_+$
+Now we want to compute the gradient but if we remember the hinge loss function it is not derivable. So to do this we compute the **subgradient**.
 
-Stochastic means we compute the gradient on a single example at a time: $\displaystyle(\mathbf x_i, y_i): E(\mathbf w, (\mathbf x_i, y_i)) = \frac{\lambda}2\|\mathbf w\|^2+|1-y_i\langle \mathbf w, \mathbf x_i\rangle|_+$
+> The **subgradient** of a function $f$ at a point $\mathbf x_0$ is any vector $\mathbf v$ such that for any $\mathbf x$ that this holds: $f(\mathbf x)-f(\mathbf x_0)\ge \mathbf v^T(\mathbf x-\mathbf x_0)$, it means you can use any of this vector as gradient in points where the derivatives doesn’t exists. His function is to find some gradients in a non derivability point
 
-Computing subgradient: when you don’t have gradient in a point (non derivability point), we can still find some gradients
-The **subgradient** of a function $f$ at a point $\mathbf x_0$ is any vector $\mathbf v$ such that for any $\mathbf x$ that this holds: $f(\mathbf x)-f(\mathbf x_0)\ge \mathbf v^T(\mathbf x-\mathbf x_0)$, it means you can use any of this vector as gradient in points where the derivatives doesn’t exists.
+The way of formally doing this is to apply an indicator function like
 
-Subgradient on such example = $\nabla_{\mathbf x}E(\mathbf w, (\mathbf x_i, y_i))=\lambda\mathbf w-\mathbb1[y_1\langle\mathbf w, \mathbf x_i\rangle<1]y_i\mathbf x_i$
-
-> indicator function: $\mathbb1[y_1\langle\mathbf w, \mathbf x_i\rangle<1]= \begin{cases}1 &\text{if }y_i\langle\mathbf w, \mathbf x_i\rangle <1 \\ 0 &\text{otherwise}\end{cases}$
-
-<img src="typora_img/loss svm.png" style="zoom:50%" border="0px" position="center">
-
-The algorithm to do the large scale learning is called _Pegasus_:
 $$
-\mathbf w_1 = 0\\
-\text{for } t=1\text{ to } T:\\
-\begin{cases} \text{1. randomly choose } (\mathbf x_{i_t},y_{i_t}) \text{ from } D\\
-\text{2. set } \displaystyle{\eta_t = \frac 1{\lambda t}}\\
-\text {3. update } \mathbf w \text{ with } \mathbf w_{t+1}=\mathbf w_t-\eta_t\nabla_{\mathbf w}E(\mathbf w, (\mathbf x_{i_t}, y_{i_t}))
-\end{cases}\\
-\text{return } \mathbf w_{T+1}
+\mathbb{1} [y_1\langle\mathbf w, \mathbf x_i\rangle<1]= 
+\begin{cases}
+  1 &\text{if }y_i\langle\mathbf w, \mathbf x_i\rangle <1 
+  \\ 
+  0 &\text{otherwise}
+\end{cases}
 $$
-The _learning rate_ is not static, it’s an **adaptive learning rate** that decreases with $t$: The choice of the learning rate allows to bound the runtime for an $\epsilon$-accurate solution to $\Omicron(d/\lambda\epsilon)$ with $d$ maximum number of non-zero features in an example.
 
-### Extra
+and computing the gradient in the part where $\displaystyle y_i\langle\mathbf w, \mathbf x_i\rangle <1$ gives as a result $y_i x_i$. So plugging it in our gradient step we get
 
-#### Dual version
+$$
+  \nabla_{\mathbf x}E(\mathbf w, (\mathbf x_i, y_i))=\lambda\mathbf w-\mathbb1[y_1\langle\mathbf w, \mathbf x_i\rangle<1]y_i\mathbf x_i
+$$
+where if the confidence is lower than one than we will apply $x_i y_i$ otherwise it will be 0.
 
-$\displaystyle \mathbf w_{t+1}=\frac1{\lambda t}\mathbb{1}[y_{i_t}\langle \mathbf w_t, \mathbf x_{i_t}\rangle<1]y_{i_t}\mathbf x_{i_t}$
+## Pegasus Algorithm
 
-We can represent $\mathbf w_{t+1}$ implicitly by storing in vector $\alpha_{t+1}$ the number of times each example was selected and had an on-zero loss, i.e. $\alpha_{t+1}[j] = |\{t'\le t:i_{t’} = j \and y_j\langle\mathbf w_{t’}, \mathbf x_j\rangle < 1 \} |$
+The algorithm to do the large scale learning is called _Pegasus_ which goes like:
 
-There is a version of Pegasus for the dual, useful combined with kernels.
+1. Initialize $\mathbf{w}_1 =0$  
+2. for $t=1$ to $T$:
+   1. Randomly choose $(\mathbf x_{i_t},y_{i_t})$ from $D$
+   2. Set $\displaystyle{\eta_t = \frac 1{\lambda t}}$
+   3. Update $\mathbf{w}$:
+  $$
+  w_{t+1}=\mathbf w_t-\eta_t\nabla_{\mathbf w}E(\mathbf w, (\mathbf x_{i_t}, y_{i_t}))
+  $$
+3. Return $\mathbf w_{T+1}$
+
+
+
+The _learning rate_ is not static, it’s an **adaptive learning rate** that decreases with $t$: The choice of the learning rate allows to bound the runtime for an $\epsilon$-accurate solution to $\Omicron(d/\lambda\epsilon)$ with $d$ maximum number of non-zero features in an example (guarantees accuracy of solution)
+
