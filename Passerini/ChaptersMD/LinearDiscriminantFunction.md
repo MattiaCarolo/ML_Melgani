@@ -260,6 +260,8 @@ $$
 \end{aligned}
 $$
 
+> PRedicting a new example will be just maximizing the functional margin
+
 ### All Pairs
 
 With this method we train a binary classifier for each pair of classes where:

@@ -1,0 +1,95 @@
+---
+title: "Non Linear SVM - Passerini"
+author: "Mattia Carolo - @Carolino96"
+header-includes:
+   - \usepackage{cancel}
+   - \usepackage{tikz}
+   - \usepackage{amsmath}
+   - \usepackage{xcolor}
+   - \usepackage{neuralnetwork}
+   - \newcommand{\indep}{\perp \!\!\! \perp}
+output:
+    pdf_document
+---
+
+# Unsupervised Learning
+
+## Setting:
+
+- supervised learning requires the availability of labelled examples (an extremely expensive process)
+- sometimes it is not even known how to label examples
+- **unsupervised** techniques can be employed to group examples into **clusters** (groups)
+
+It’s often the first step when looking at some data.
+
+## k-means
+
+### Setting
+
+Simplest approach for _clustering_ is $k$-means; we decide a priori the number of clusters $k$ where each cluster $i$ will be represented by its mean $\mu_i$. Generally we'd want to associate examples to the cluster with the closer mean.
+
+### Algorithm
+
+1. We initialize all the clusters with random means $\mu_1,...,\mu_k$
+2. Iterate until no mean changes:
+   1. Assign each example to the cluster with the closest mean
+   2. Update the mean of each cluster according to the new assigned examples
+
+## (Dis)Similarity
+
+In order to cluster we introduce the concept of **similarity** which tells how much two different examples differs from one another.
+
+- (if samples are vectors) Standard Euclidean distance in $\R^d$: $\displaystyle d(\bold x, \bold x')=\sqrt{\sum_{i=1}^d(x_i-x_i')^2}$ 
+- Generic Minkowski metric for $p \ge 1$ (where $p$ is an integer): $\displaystyle d(\bold x, \bold x')=\left(\sum_{i=1}^d|x_i-x_i'|^p\right)^{\frac1p}$
+  - generalized and more used metric respect to the euclidean distance. By setting the parameter $p$ we get with 1 for example the *Manhattan distance* and with 2 the beforementioned *Euclidean distance*
+- Cosine similarity (cosine of the angle between vectors): $\displaystyle s(\bold x, \bold x')=\frac{\bold x^T\bold x'}{\|\bold x\|\| \bold x'\|}$
+
+**Metric learning** is important: instead of assuming a predefined metric, you _learn_ it from data (maybe some feature have different weights)
+
+## Quality of clusters
+
+There are different criteria to analyze the quality of a cluster. We will introduce only the **Sum-of-squared error criterion**. This measure tells how bad an approximation of the clusters is using the mean.
+In this measure we take the $i$-th clsuter where $n_i$ will be the number of samples in cluster $D_i$ and $\mu_i$ be the sample mean $\displaystyle \mu_i=\frac{1}{n_i}\sum_{\bold x\in D_i}\bold x$. The sum of squared errors will be
+$$
+E=\sum_{i=1}^k\sum_{\bold x\in D_i}\|\bold x -\mu_i\|^2
+$$
+
+It measures the squared error incurrent in representing each sample with its cluster mean.
+
+## Gaussian Mixture model
+
+Another method of clustering is the **Gaussian Mixture Model** where we still decide a priori the number of clusters but we treat each cluster as a Gaussian Distribution in which for every cluster we need to estimate the *mean* and possibly the *variance*
+
+Problem: if we have data and we have to fit the Gaussian, we can make Maximum-Likelihood of parameters (mean and variance) but you don’t know each example at which gaussian it corresponds; so we adopt the **Expectation-Maximization** approach where:
+
+1. Compute _expected cluster_ assignment given the current parameter setting
+2. _Estimate parameters_ given the cluster assignment
+3. _Iterate_
+
+> **latent variable** -> are variables that are not directly observed but are rather inferred like the assign an example to an unknown cluster
+
+### Setting
+
+ A dataset of $x_1, . . . , x_n$ examples is observed
+- For each example $x_i$, cluster assignment is modelled as $z_{i1}, . . . , z_{ik}$ binary latent (unknown) variables
+- $z_{ij} = 1$ if Gaussian $j$ generated $x_i$, $0$ otherwise [_hot encoding_]
+- Parameters to be estimated are the $\mu_1, . . . , \mu_k$ Gaussians means
+- All Gaussians are assumed to have the same (known) variance $\sigma^2$
+
+> hot encoding: a vector of $k$ binary variables, $z_{ij} = 1$ if the example $x_i$ came from gaussian $j$, $0$ otherwise (it represent the cluster assigned)
+
+### Algorithm
+
+1. initialize the parameters (as hypothesis) $h = \langle\mu_1,...,\mu_k\rangle$ randomly
+2. Iterate until the difference in _Maximum Likelihood_ is below a certain threshold:
+   - **E-step**: calculate expected value $E[z_{ij}]$ of each latent variable assuming current hypothesis $h = \langle\mu_1, . . . , \mu_k\rangle$ holds
+   - **M-step**: calculate a new ML hypothesis $h' = \langle\mu'_1, . . . , \mu'_k\rangle$ assuming values of latent variables are their expected values just computed. Replace $h \leftarrow h'$ (at the end of this step we have a new hypothesis that replaces the current, and repeat)
+
+Before going into the computation we need to remember that $z_{ij}$ whether example $x_i$ is generated from gaussian $j$
+
+The computation goes like
+- **E-step** The expected value of $z_{ij}$ is the probability that $x_i$ is generated by Gaussian $j$ assuming hypothesis $h = \langle\mu_1, . . . , \mu_k\rangle$ holds: $\displaystyle E[z_{ij}]=\frac{p(x_i|\mu_j)}{\displaystyle\sum_{l=1}^k p(x_i|\mu_l)} = \frac{\displaystyle	\exp(-\frac{1}{2\sigma^2}[x_i-\mu_j]^2)}{\displaystyle 	\sum_{l=1}^k	\exp(-\frac{1}{2\sigma^2}[x_i-\mu_l]^2)}$
+  (the coefficient of the gaussian is absent because is cancelled out with the denominator because it’s constant)
+- **M-step**: The maximum-likelihood mean $\mu_j$ is the weighted sample mean, each instance being weighted by its probability of being generated by Gaussian $j$: $\mu'_j=\frac{\displaystyle\sum_{l=1}^n E[z_{ij}]x_i}{\displaystyle\sum_{l=1}^n E[z_{ij}]}$
+
+## Expectation-Maximization (EM)

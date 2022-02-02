@@ -265,6 +265,7 @@ In this case $l$ is a loss function that tells how much we pay for a missclassif
 ### Hinge loss
 
 Now that we know that our slack variable is the loss function we can establish that $\xi_i = l(y_i, f(\mathbf x_i))$. Rewriting the possible values $\xi_i$ can have we get that
+
 $$
 \xi_i =
 \begin{cases}
