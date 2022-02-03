@@ -234,7 +234,9 @@ A **hierarchy** of clusters can be built in greedy ways:
 
 **Dendrogram** (an example of bottom up):
 
-<img src="typora_img/dendogram.png" style="zoom:50%" border="0px" position="center">
+|![Feature Mapping](../img/dendogram.png "Feature Mapping")|
+|:--:|
+|**Dendogram bottom up**|
 
 ### Agglomerative hierarchical clustering (bottom-up)
 
