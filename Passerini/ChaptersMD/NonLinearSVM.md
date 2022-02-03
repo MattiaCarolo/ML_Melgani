@@ -1,6 +1,5 @@
 ---
 title: "Non Linear SVM - Passerini"
-author: "Mattia Carolo - @Carolino96"
 header-includes:
    - \usepackage{cancel}
    - \usepackage{tikz}

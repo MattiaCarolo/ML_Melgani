@@ -1,6 +1,5 @@
 ---
-title: "Non Linear SVM - Passerini"
-author: "Mattia Carolo - @Carolino96"
+title: "unsupervised Learning - Passerini"
 header-includes:
    - \usepackage{cancel}
    - \usepackage{tikz}
