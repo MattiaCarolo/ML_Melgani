@@ -88,7 +88,7 @@ Applying our new loss function now the problem will be like:
 
 $$
 \begin{aligned}
-    \max_{\bold w\in X, w_0\in\R, \xi,\xi^*\in\R^m} &\quad
+    \min_{\bold w\in X, w_0\in\R, \xi,\xi^*\in\R^m} &\quad
 	\frac{\|\bold w\|^2}2+C\sum_{i=1}^m(\xi_i +\xi^*_i)
 \\
 \text{ subject to}&\quad \bold w ^T \phi(\bold x_i) + w_0-y_i\le\epsilon+\xi_i
