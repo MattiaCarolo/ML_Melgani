@@ -179,7 +179,7 @@ Upon updating the transition model, it calls standard policy evaluation to updat
 
 Each step is _expensive_ as it runs policy evaluation (and the number of steps is huge in order to the agent to learn something)
 
-## Temporal-difference (TD)
+## Temporal-difference (TD) policy evslustion
 
 _Approximate_ solution of ADP to reduce the “expensiveness”.
 
@@ -213,7 +213,7 @@ If the state is new, you “remember” the reward for reaching it.
 - Takes longer to converge
 - Can be seen as a rough efficient approximation of ADP
 
-## Policy learning in unknown environment
+# Policy learning in unknown environment
 
 Modify those algorithms to also learn the policy instead of only evaluating it.
 
@@ -221,7 +221,7 @@ Modify those algorithms to also learn the policy instead of only evaluating it.
 
 There is a problem: The knowledge of the environment is incomplete. A greedy agent usually learns a suboptimal policy (lack of  exploration).
 
-#### Exploration-exploitation trade-off
+## Exploration-exploitation trade-off
 
 - Exploitation consists in following promising directions given current knowledge
 
@@ -231,7 +231,7 @@ There is a problem: The knowledge of the environment is incomplete. A greedy age
 
   - ϵ-greedy strategy: choose a random move with probability ϵ, be greedy otherwise
 
-  - assign higher utility estimates to (relatively) unexplored state-action pairs: $\displaystyle U^+(s)=R(s)+\gamma\max_{a\in A}f\left(\sum_{s'\in S}p(s'|s,a)U^+(s'), N_{sa}\right)$
+  - assign higher utility estimates to (relatively) unexplored state-action pairs: $$U^+(s)=R(s)+\gamma\max_{a\in A}f\left(\sum_{s'\in S}p(s'|s,a)U^+(s'), N_{sa}\right)$$
 
     with f increasing over the first argument and decreasing over the second.
 
@@ -243,7 +243,7 @@ There is a problem: The knowledge of the environment is incomplete. A greedy age
 
 It’s common going with solution in which each iteration runs faster.
 
-#### TD
+## TD policy learnin
 
 To learn the $<\text{utility of the state}, \text{action}>$ pairs (action utility):
 
@@ -252,13 +252,13 @@ To learn the $<\text{utility of the state}, \text{action}>$ pairs (action utilit
 - TD can instead be applied to learn an action utility function $Q(s, a)$ (I don’t need the transition model, I incorporate it in $Q$)
 - The optimal policy corresponds to: $\pi^*(s=\text{argmax}_{a\in A}Q(s,a))$
 
-#### SARSA
+## SARSA
 
 The algorithm adapted to _learn an utility-action pair_ is SARSA.
 
 Here I’m updating the utility-action pair so I need to look at the next utility-action pair.
 
-##### SARSA: on-policy TD learning:
+### SARSA: on-policy TD learning:
 
 1. Initialize s
 2. Repeat:
@@ -271,11 +271,11 @@ Here I’m updating the utility-action pair so I need to look at the next utilit
 
 This is an algorithm that explores the space and finds rewards of new states in within and updates the utility estimate of the state-action pair and it use it in order to find the updated policy. 
 
-#### Q-learning
+## Q-learning
 
 Another option is to not take another action and take the max current utility action pair function:
 
-##### Q-learning: off-policy TD learning
+### Q-learning: off-policy TD learning
 
 1. Initialize $s$
 2. Repeat:
@@ -286,18 +286,17 @@ Another option is to not take another action and take the max current utility ac
    5. Update local utility estimate $Q(s,a)\leftarrow Q(s,a)+\alpha(r+\gamma\bold{\text{\bf max}_{a'\in A}} Q(s', a')-Q(s,a))$
 3. Until $s$ is terminal
 
-#### SARSA vs Q-learning
+## SARSA vs Q-learning
 
 - SARSA is **on-policy**: it updates $Q$ using the current policy’s action
 - Q-learning is **off-policy**: it updates $Q$ using the greedy policy’s action (which is NOT the policy it uses to search)
 - Off-policy methods are _more flexible_: they can even learn from traces generated with an unknown policy
 - On-policy methods tend to _converge faster_, and are easier to use for continuous-state spaces and linear function approximators (see following slides)
 
->  $a’$ is decided according to the current policy. $a’$ is  not an action to do in order to reach a space, but it also used to update $Q$ (? non so da dove sia uscita questa riga)
 
-### Function Approximation
+# Function Approximation
 
-Main aspect of Deep Reinforcement Learning: until now we thought about a tabula representation of utility functions (states or utility-action pairs).
+Main aspect of Deep Reinforcement Learning: until now we thought about a tabular representation of utility functions (states or utility-action pairs).
 
 The space grows while you explore it, and sometimes the space could also be continuous.
 
@@ -321,13 +320,13 @@ Q learning: $<state, action> \to$ Q table $\to$ Q-value
 
 Deep Q learning: state $\to$ neural network $\to \begin{cases}Q-\text{value action } 1\\Q-\text{value action } 2\\.\\.\\Q-\text{value action } N\end{cases}$ 
 
-##### How you can do the learning process
+### How you can do the learning process
 
 If $U$ is a function approximating the table I call it $U_{\theta}$ where $\theta$ are the parameters (so we don’t have the table).
 
 TD learning: state utility
 
-- TD error $\displaystyle E(s,s')+\frac12(R(s)+\gamma U_{\theta}(s')-U_\theta(s))^2$
+- TD error $\displaystyle E(s,s') = \frac12(R(s)+\gamma U_{\theta}(s')-U_\theta(s))^2$
 
 
 
@@ -335,7 +334,7 @@ TD learning: state utility
 
 
 
-- Stochastic gradient update rule $\theta = \theta-\alpha\nabla_\theta E(s,s')\\=\theta +\alpha(R(s)+\gamma U_\theta(s')-U_\theta(s))(\nabla_\theta U_\theta(s))$
+- Stochastic gradient update rule $$\begin{aligned}\theta &= \theta-\alpha\nabla_\theta E(s,s')\\&=\theta +\alpha(R(s)+\gamma U_\theta(s')-U_\theta(s))(\nabla_\theta U_\theta(s))\end{aligned}$$
 
 
 
@@ -349,7 +348,7 @@ TD learning: state utility
 
 Almost the same on Q-learning: TD learning: action utility (Q-learning):
 
-- TD error $E((s,a),s')+\frac12(R(s)+\gamma\displaystyle\max_{a’\in A}Q_{\theta}(s',a')-Q_{\theta}(s,a))^2$
+- TD error $E((s,a),s')=\frac12(R(s)+\gamma\displaystyle\max_{a’\in A}Q_{\theta}(s',a')-Q_{\theta}(s,a))^2$
 
 
 
@@ -357,4 +356,4 @@ Almost the same on Q-learning: TD learning: action utility (Q-learning):
 
 
 
-- Stochastic gradient update rule $\theta = \theta-\alpha\nabla_\theta E((s,a),s')\\ =\theta +\alpha\left(R(s)+\gamma \max_{a’\in A}Q_{\theta}(s',a')-\max_{a’\in A}Q_{\theta}(s,a)\right)(\nabla_\theta Q_{\theta}(s,a))$
+- Stochastic gradient update rule $$\begin{aligned}\theta &= \theta-\alpha\nabla_\theta E((s,a),s')\\ &=\theta +\alpha\left(R(s)+\gamma \max_{a’\in A}Q_{\theta}(s',a')-\max_{a’\in A}Q_{\theta}(s,a)\right)(\nabla_\theta Q_{\theta}(s,a))\end{aligned}$$
