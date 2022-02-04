@@ -169,5 +169,3 @@ Examples for which either $0<\alpha_i<C$ <u>or</u> $0<\alpha_i^* < C$ (they stay
 The remaining examples that stay out of the $\epsilon$-insensitive region (out of the tube), in such case they are **bound support vectors** and their $\alpha_i=C$ or $\alpha_i^*=C$
 
 > in the regression you have to stay _inside_ the tube, in classification _outside_ the margin
->
-> ma ora che ci penso, cosa cambia tra $\alpha_i$ e $\alpha_i^*$? Si riferiscono a dei vettori particolari?
