@@ -23,5 +23,3 @@ where the first argument is the source file and the second one will be the resul
 # Rights and Liabilities
 
 The images are mostly from slides or web just to speed up the process since there is no interest from the authors in publishing the resource
-
-Still since it's time consuming if you want to effer a coffee i won't say no
