@@ -17,39 +17,39 @@ output:
 For learning non-linear models we can apply feature mapping (you have to know _which_ mapping to apply). Even if polynomial mapping is useful, in general it could be _expensive_ to explicitly compute the mapping and deal with a high dimension feature space.
 
 If we look at dual formulation of SVM problem, <u>the feature mapping only appears in dot products</u>.
-The **kernel trick** replace the dot product with an equivalent kernel function over the inputs, that produces the output of the dot product but in feature space, without mapping (explicitly) $\bold  x$ and $\bold x’$ to it.
+The **kernel trick** replace the dot product with an equivalent kernel function over the inputs, that produces the output of the dot product but in feature space, without mapping (explicitly) $\mathbf  x$ and $\mathbf x’$ to it.
 
 So the dual problem for svm becomes
 $$
- \max_{\alpha\in\R^m}\quad \sum_{i-1}^m\alpha_i-\frac12\sum_{i,j=1}^m\alpha_i\alpha_jy_iy_j\overbrace{\phi(\bold x_i)^T\phi(\bold x_j)}^{k(\bold x_i, \bold x_j)}\\
+ \max_{\alpha\in\mathbb{R}^m}\quad \sum_{i-1}^m\alpha_i-\frac12\sum_{i,j=1}^m\alpha_i\alpha_jy_iy_j\overbrace{\phi(\mathbf x_i)^T\phi(\mathbf x_j)}^{k(\mathbf x_i, \mathbf x_j)}\\
 \text{ subject to}\quad 0\le\alpha_i\le C, \quad i=1,...,m\\
 \sum_{i=1}^m\alpha_iy_i=0
 $$
-and the dual _decision function_ becomes : $\displaystyle f(\bold x)=\sum_{i=1}^m\alpha_iy_i\overbrace{\phi(\bold x_i)^t\phi(\bold x)}^{k(\bold x_i, \bold x)}$
+and the dual _decision function_ becomes : $\displaystyle f(\mathbf x)=\sum_{i=1}^m\alpha_iy_i\overbrace{\phi(\mathbf x_i)^t\phi(\mathbf x)}^{k(\mathbf x_i, \mathbf x)}$
 
 This is useful beacuse if $k$ computes the dot product without computing the mapping
 
 ## Example in polynomial mapping
 
-- **Homogeneous** polynomial kernel: the same result can be achieved by taking as kernel  $k(\bold x,\bold x')=(\bold x^T\bold x’)^d$ it is the dot product in input space not feature space and the result is a scalar raised to $d$
-  - $k(\mathbf{x},\mathbf{x'}) =(\bold x^T\bold x’)^d, \quad k(\begin{pmatrix}x_1\\x_2\end{pmatrix}, \begin{pmatrix}x'_1\\x_2'\end{pmatrix}) = (x_1x'_1+x_2x'_2)^2$
-- **Inhomogeneous** polynomial kernel: $k(\bold x,\bold x')=(1+\bold x^T\bold x’)^d$
-  - $k(\mathbf{x},\mathbf{x'}) =(1 + \bold x^T\bold x’)^d, \quad k(\begin{pmatrix}x_1\\x_2\end{pmatrix}, \begin{pmatrix}x'_1\\x_2'\end{pmatrix}) = (1+x_1x'_1+x_2x'_2)$
+- **Homogeneous** polynomial kernel: the same result can be achieved by taking as kernel  $k(\mathbf x,\mathbf x')=(\mathbf x^T\mathbf x’)^d$ it is the dot product in input space not feature space and the result is a scalar raised to $d$
+  - $k(\mathbf{x},\mathbf{x'}) =(\mathbf x^T\mathbf x’)^d, \quad k(\begin{pmatrix}x_1\\x_2\end{pmatrix}, \begin{pmatrix}x'_1\\x_2'\end{pmatrix}) = (x_1x'_1+x_2x'_2)^2$
+- **Inhomogeneous** polynomial kernel: $k(\mathbf x,\mathbf x')=(1+\mathbf x^T\mathbf x’)^d$
+  - $k(\mathbf{x},\mathbf{x'}) =(1 + \mathbf x^T\mathbf x’)^d, \quad k(\begin{pmatrix}x_1\\x_2\end{pmatrix}, \begin{pmatrix}x'_1\\x_2'\end{pmatrix}) = (1+x_1x'_1+x_2x'_2)$
 
 
 # Kernel validity
 
 A kernel, if valid, always corresponds to a dot product in some feature space.
 
-A kernel is valid if it’s defined as a _similarity function_ defined as **cartesian product** of input space $k:X\times X\to \R$. It corresponds to a dot product in a certain feature space $k(\bold x, \bold x’) = \phi(\bold x)^T\phi(\bold x’)$
+A kernel is valid if it’s defined as a _similarity function_ defined as **cartesian product** of input space $k:X\times X\to \mathbb{R}$. It corresponds to a dot product in a certain feature space $k(\mathbf x, \mathbf x’) = \phi(\mathbf x)^T\phi(\mathbf x’)$
 
 You can compute kernels even with objects that are not vectors, like sequences $\to$ the kernel generalizes the notion of dot product to arbitrary input space 
 
 ## Condition for validity
 
-The **Gram matrix** is a _symmetric matrix_ of the kernels between pairs of examples: $K_{ij} = k(\bold x_i, \bold x_j)\quad \forall i, j$
+The **Gram matrix** is a _symmetric matrix_ of the kernels between pairs of examples: $K_{ij} = k(\mathbf x_i, \mathbf x_j)\quad \forall i, j$
 
-**Positive definite** matrix: a symmetric matrix is positive definite if for any possible vector c $\Rightarrow \sum_{i,j=1}^mc_ic_jK_{ij}\ge 0,\quad \forall \bold c \in \R^m$
+**Positive definite** matrix: a symmetric matrix is positive definite if for any possible vector c $\mathbb{R}ightarrow \sum_{i,j=1}^mc_ic_jK_{ij}\ge 0,\quad \forall \mathbf c \in \mathbb{R}^m$
 
 If equality <u>only</u> holds for $c = 0$, the matrix is **strictly positive definite**
 
@@ -60,7 +60,7 @@ If equality <u>only</u> holds for $c = 0$, the matrix is **strictly positive def
 
 ### Positive definite kernel
 
-- A positive definite kernel is a function $k: X\times X \to \R$ giving rise to a positive definite _Gram matrix_ for any $m$ and $\{\bold x_1,..., \bold x_m\}$
+- A positive definite kernel is a function $k: X\times X \to \mathbb{R}$ giving rise to a positive definite _Gram matrix_ for any $m$ and $\{\mathbf x_1,..., \mathbf x_m\}$
 - positive definiteness is **necessary** and **sufficient** condition for a kernel to correspond to a dot product of some feature map $\phi$
 
 To verify if the kernel is valid, either we have to:
@@ -69,11 +69,11 @@ To verify if the kernel is valid, either we have to:
 - make the _feature map explicit_
 - using _kernel combination properties_ (using already valid kernels combined)
 
-In the dual problem for SVM regression, $\phi(\bold x)$ appears only in the dot product (and also in the decision function $\displaystyle
-f(\bold x)=\bold w^T\phi(\bold x)+w_0=\sum_{i=1}^m(\alpha_i-\alpha_i^*)\overbrace{\phi(\bold x_i)^T\phi(\bold x)}^{k(\bold x_i, \bold x)}+w_0$):
+In the dual problem for SVM regression, $\phi(\mathbf x)$ appears only in the dot product (and also in the decision function $\displaystyle
+f(\mathbf x)=\mathbf w^T\phi(\mathbf x)+w_0=\sum_{i=1}^m(\alpha_i-\alpha_i^*)\overbrace{\phi(\mathbf x_i)^T\phi(\mathbf x)}^{k(\mathbf x_i, \mathbf x)}+w_0$):
 $$
-\displaystyle \max_{\alpha\in\R^m}\quad 
--\frac12\sum_{i,j=1}^m(\alpha_i^*-\alpha_i)(\alpha_j^*-\alpha_j)\overbrace{\phi(\bold x_i)^T\phi(\bold x_j)}^{k(\bold x_i, \bold x_j)}
+\displaystyle \max_{\alpha\in\mathbb{R}^m}\quad 
+-\frac12\sum_{i,j=1}^m(\alpha_i^*-\alpha_i)(\alpha_j^*-\alpha_j)\overbrace{\phi(\mathbf x_i)^T\phi(\mathbf x_j)}^{k(\mathbf x_i, \mathbf x_j)}
 -\epsilon\sum_{i=1}^m(\alpha_i^*+\alpha_i)+\sum_{i=1}^my_i(\alpha_i^*-\alpha_i)
 \\
 \text{ subject to}\quad 
@@ -83,20 +83,20 @@ $$
 
 ## Kernelize the Perceptron
 
-- _stochastic perceptron_ (already seen) $f(\bold x) = \bold w^T\bold x$:
-  - initialize $\bold w = 0$
-  - iterate until all examples are classified correctly $\to$ for each incorrectly classified training example $(\bold x_i, y_i): \bold w \leftarrow \bold w + \eta y_i\bold x_i$
-- **kernel perceptron** $\displaystyle f(\bold x) = \sum_{i=1}^m\alpha_ik(\bold x_i,\bold x)$:
+- _stochastic perceptron_ (already seen) $f(\mathbf x) = \mathbf w^T\mathbf x$:
+  - initialize $\mathbf w = 0$
+  - iterate until all examples are classified correctly $\to$ for each incorrectly classified training example $(\mathbf x_i, y_i): \mathbf w \leftarrow \mathbf w + \eta y_i\mathbf x_i$
+- **kernel perceptron** $\displaystyle f(\mathbf x) = \sum_{i=1}^m\alpha_ik(\mathbf x_i,\mathbf x)$:
   - initialize $\alpha_i = 0\quad\forall i$
-  - iterate until all examples are classified correctly $\to$ for each incorrectly classified training example $(\bold x_i, y_i): \alpha_i\leftarrow\alpha_i+ \eta y_i$
+  - iterate until all examples are classified correctly $\to$ for each incorrectly classified training example $(\mathbf x_i, y_i): \alpha_i\leftarrow\alpha_i+ \eta y_i$
 
-$\Rightarrow$ in kernel machines you always have that the decision function is the _sum over the training sample of coefficient times_ $k(\bold x_i, \bold x)$. The coefficient changes depending on the problem.
+$\mathbb{R}ightarrow$ in kernel machines you always have that the decision function is the _sum over the training sample of coefficient times_ $k(\mathbf x_i, \mathbf x)$. The coefficient changes depending on the problem.
 
 ## Basic kernels
 
-- **linear kernel** $k(\bold x, \bold x') = \bold x^T\bold x'$: it computes only the dot product: it’s useful when combining kernel because when you don’t have a kernel, in reality you have the linear kernel;
-- **polynomial kernel** $k_{d,c}(\bold x, \bold x')=(\bold x^T\bold x'+c)^d$: homogeneous if $c = 0$, inhomogeneous otherwise
-- **gaussian kernel** $\displaystyle k_\sigma(\bold x, \bold x')=\exp(-\frac{\|\bold x-\bold x'\|^2}{2\sigma^2}) = \exp(-\frac{\bold x^T\bold x-2\bold x^T\bold x'+\bold x'^T\bold x'}{2\sigma^2})$
+- **linear kernel** $k(\mathbf x, \mathbf x') = \mathbf x^T\mathbf x'$: it computes only the dot product: it’s useful when combining kernel because when you don’t have a kernel, in reality you have the linear kernel;
+- **polynomial kernel** $k_{d,c}(\mathbf x, \mathbf x')=(\mathbf x^T\mathbf x'+c)^d$: homogeneous if $c = 0$, inhomogeneous otherwise
+- **gaussian kernel** $\displaystyle k_\sigma(\mathbf x, \mathbf x')=\exp(-\frac{\|\mathbf x-\mathbf x'\|^2}{2\sigma^2}) = \exp(-\frac{\mathbf x^T\mathbf x-2\mathbf x^T\mathbf x'+\mathbf x'^T\mathbf x'}{2\sigma^2})$
   - depends on $\sigma$, the **width** parameter
   - the smaller the width, the more predictions on a point only depends on its nearest neighbours
   - it’s a **universal kernel**: it can uniformly approximate any arbitrary continuous target function (but you first have to find the correct value of $\sigma$)
@@ -166,7 +166,7 @@ Building the kernel combining pieces, provided the basic kernels are valid and t
 It’s an efficient **graph kernel** for large graphs. It relies on (approximation of) Weistfeiler-Lehman test of graph isomorphism and it describes a family of graph kernel:
 
 - Let $\{G_0, G_1, ..., G_h\} = \{(V, E, I_0), (V, E, I_1),...,(V, E, I_h)\}$ be a sequence of graphs made from $G$ where $I_i$ is the node labelling the $i$th WL iteration
-- Let $k: G\times G'\to\R$ be any kernel on graphs
+- Let $k: G\times G'\to\mathbb{R}$ be any kernel on graphs
 - the Weistfeiler-Lehman graph kernel is defined as: $\displaystyle k^h_{WL}(G,G')=\sum_{i=0}^h k (G_i, G_i')$
 
 > Graphs G and H are isomorphic if there is a structure that preserves a one-to-one correspondence between the vertices and edges.

@@ -38,19 +38,19 @@ Simplest approach for _clustering_ is $k$-means; we decide a priori the number o
 
 In order to cluster we introduce the concept of **similarity** which tells how much two different examples differs from one another.
 
-- (if samples are vectors) Standard Euclidean distance in $\R^d$: $\displaystyle d(\bold x, \bold x')=\sqrt{\sum_{i=1}^d(x_i-x_i')^2}$ 
-- Generic Minkowski metric for $p \ge 1$ (where $p$ is an integer): $\displaystyle d(\bold x, \bold x')=\left(\sum_{i=1}^d|x_i-x_i'|^p\right)^{\frac1p}$
+- (if samples are vectors) Standard Euclidean distance in $\mathbb{R}^d$: $\displaystyle d(\mathbf x, \mathbf x')=\sqrt{\sum_{i=1}^d(x_i-x_i')^2}$ 
+- Generic Minkowski metric for $p \ge 1$ (where $p$ is an integer): $\displaystyle d(\mathbf x, \mathbf x')=\left(\sum_{i=1}^d|x_i-x_i'|^p\right)^{\frac1p}$
   - generalized and more used metric respect to the euclidean distance. By setting the parameter $p$ we get with 1 for example the *Manhattan distance* and with 2 the beforementioned *Euclidean distance*
-- Cosine similarity (cosine of the angle between vectors): $\displaystyle s(\bold x, \bold x')=\frac{\bold x^T\bold x'}{\|\bold x\|\| \bold x'\|}$
+- Cosine similarity (cosine of the angle between vectors): $\displaystyle s(\mathbf x, \mathbf x')=\frac{\mathbf x^T\mathbf x'}{\|\mathbf x\|\| \mathbf x'\|}$
 
 **Metric learning** is important: instead of assuming a predefined metric, you _learn_ it from data (maybe some feature have different weights)
 
 ## Quality of clusters
 
 There are different criteria to analyze the quality of a cluster. We will introduce only the **Sum-of-squared error criterion**. This measure tells how bad an approximation of the clusters is using the mean.
-In this measure we take the $i$-th clsuter where $n_i$ will be the number of samples in cluster $D_i$ and $\mu_i$ be the sample mean $\displaystyle \mu_i=\frac{1}{n_i}\sum_{\bold x\in D_i}\bold x$. The sum of squared errors will be
+In this measure we take the $i$-th clsuter where $n_i$ will be the number of samples in cluster $D_i$ and $\mu_i$ be the sample mean $\displaystyle \mu_i=\frac{1}{n_i}\sum_{\mathbf x\in D_i}\mathbf x$. The sum of squared errors will be
 $$
-E=\sum_{i=1}^k\sum_{\bold x\in D_i}\|\bold x -\mu_i\|^2
+E=\sum_{i=1}^k\sum_{\mathbf x\in D_i}\|\mathbf x -\mu_i\|^2
 $$
 
 It measures the squared error incurrent in representing each sample with its cluster mean.
@@ -96,9 +96,7 @@ The computation goes like
 EM is a general strategy for dealing with optimization in a setting with uncertain data.
 Generically we mean we are given a dataset made of an observed part $X$ and an unobserved part $Z$ (for example in clustering is the cluster assignment) and we wish to estimate the hypothesisi maximizing the expected log-likelihood for the data, whith expectation taken over unobserved data which formalizes in:
 
-$$
-h^* = \argmax_h E_Z [ln \space p(X,Z|h)]
-$$
+$$h^\ast = \text{argmax}_h E_Z [\ln \space p(X,Z|h)]$$
 
 so we want to maximize out hypotesis over log likelihhod of $X$ and $Z|h$ taking the expectation of $Z$ which is not observed.
 
@@ -256,10 +254,10 @@ You can stop whenever the problem requires.
 
 _Between clusters/sets_
 
-- **Nearest-neighbour**: _minimal distance_ between the elements in the two sets $\displaystyle d_{\min}(D_i, D_j)=\min_{\bold x\in D_i, \bold x'\in D_j}\|\bold x - \bold x'\|$
-- **Farthest-neighbour**: _maximal distance_ between the elements in the two sets $\displaystyle d_{\max}(D_i, D_j)=\max_{\bold x\in D_i, \bold x'\in D_j}\|\bold x - \bold x'\|$
-- **Average distance**: _average the distances_ between elements in the two sets $\displaystyle d_{\text{avg} }=\frac{1}{n_in_j}\sum_{\bold x\in D_i}\sum_{\bold x'\in D_j}\|\bold x-\bold x'\|$
-- **Distance between means**: just the _distance between the two means_ $d_{\text{mean}}(D_i, D_j)=\|\bold \mu_i - \mu_j\|$
+- **Nearest-neighbour**: _minimal distance_ between the elements in the two sets $\displaystyle d_{\min}(D_i, D_j)=\min_{\mathbf x\in D_i, \mathbf x'\in D_j}\|\mathbf x - \mathbf x'\|$
+- **Farthest-neighbour**: _maximal distance_ between the elements in the two sets $\displaystyle d_{\max}(D_i, D_j)=\max_{\mathbf x\in D_i, \mathbf x'\in D_j}\|\mathbf x - \mathbf x'\|$
+- **Average distance**: _average the distances_ between elements in the two sets $\displaystyle d_{\text{avg} }=\frac{1}{n_in_j}\sum_{\mathbf x\in D_i}\sum_{\mathbf x'\in D_j}\|\mathbf x-\mathbf x'\|$
+- **Distance between means**: just the _distance between the two means_ $d_{\text{mean}}(D_i, D_j)=\|\mathbf \mu_i - \mu_j\|$
 
 $d_{\min}$ and $d_{\max}$ are more sensitive to outliers
 

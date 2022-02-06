@@ -92,7 +92,7 @@ Basically the utility of a state is the expected reward of moving from that stat
 - the sum starts from $S_{t+1}$ since $k=0$ to infinity given that the state at time $t$ is $s$ so state $t+1$ will be the successive reached state with that particular policy (where $S_{t+k+1}$ is the state reached after $k$ steps using policy $\pi$ starting from $S_t=s$)
 - since we are considering a delayed reward we got a $\gamma^t$ which will be our decaying factor for successive rewards
 
-> Utility of a state $s$ given a certain policy$ \pi$ is the Expected reward $E_\pi$
+> Utility of a state $s$ given a certain policy $\pi$ is the Expected reward $E_\pi$
 
 The **true utility** of a state is its utility using the optimal policy: $U(s)=U^{\pi^*}(s)$
 
