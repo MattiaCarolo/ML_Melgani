@@ -165,7 +165,7 @@ Algorithm based on policy evaluation:
       2. Choose next action $a \leftarrow \pi(s)$
       3. Take action $a$, reach step $s'$
       4. Update counts $N_{sa}\leftarrow N_{sa}+1;\quad N_{s'|sa}\leftarrow N_{s'|sa}+1$
-      5. Update transition model $p(s'|s,a)\leftarrow N_{s''|sa}/N_{sa}\quad s''\in S$ (101: it normalizes the model given all the possibilites for a certain action in that state )
+      5. Update transition model $p(s''|s,a)\leftarrow N_{s''|sa}/N_{sa}\quad s''\in S$ (101: it normalizes the model given all the possibilites for a certain action in that state )
       6. Update utility estimate $U\leftarrow \text{PolicyEvaluation}(\pi, U, p, R, \gamma)$ (for the policy evaluation look at policy iteration from before)
    3. Until $s$ is terminal
 
@@ -283,7 +283,7 @@ Another option is to not take another action and take the max current utility ac
    2. Choose next action $a\leftarrow \pi^\epsilon(s)$
    3. Take action $a$, reach step $s’$
    4. <s>Choose action $\cancel{a’\leftarrow \pi^\epsilon(s’)}$ (this point is added in this variant)</s>
-   5. Update local utility estimate $Q(s,a)\leftarrow Q(s,a)+\alpha(r+\gamma\bold{\text{\bf max}_{a'\in A}} Q(s', a')-Q(s,a))$
+   5. Update local utility estimate $Q(s,a)\leftarrow Q(s,a)+\alpha(r+\gamma \space{\text{\bf max}_{a'\in A}} Q(s', a')-Q(s,a))$
 3. Until $s$ is terminal
 
 ## SARSA vs Q-learning

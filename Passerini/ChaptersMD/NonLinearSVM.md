@@ -42,7 +42,7 @@ $$
 
 Now the part we wnat to leverage is this. For every linear separation (i.e. hyperplane) we have in the feature space it corresponds to a non-linear separation in the original input space as we can see from the image above on the third representation. 
 
-For example suppose we have the weights like $w = \langle w_1,w_2,w_3,w_0\rangle$ and a mapping we'd get in the original space:
+For example suppose we have the weights like $w = \langle w_1,w_2,w_3,w_0\mathbb{R}angle$ and a mapping we'd get in the original space:
 $$
 f \begin{pmatrix}
     x_1
@@ -56,7 +56,7 @@ $$
 
 During regression with support vector machines we want to retain combination of regularization and data fitting. This will be achieved using a **sparsifying loss** to have few support vectors.
 
-> Regularization $\Rightarrow$ *smoothness* of the learned function
+> Regularization $\mathbb{R}ightarrow$ *smoothness* of the learned function
 
 ### $\epsilon$ insensitive loss
 
@@ -87,12 +87,12 @@ Applying our new loss function now the problem will be like:
 
 $$
 \begin{aligned}
-    \min_{\bold w\in X, w_0\in\R, \xi,\xi^*\in\R^m} &\quad
-	\frac{\|\bold w\|^2}2+C\sum_{i=1}^m(\xi_i +\xi^*_i)
+    \min_{\mathbf{w}\in X, w_0\in\mathbb{R}, \xi,\xi^*\in\mathbb{R}^m} &\quad
+	\frac{\|\mathbf{w}\|^2}2+C\sum_{i=1}^m(\xi_i +\xi^*_i)
 \\
-\text{ subject to}&\quad \bold w ^T \phi(\bold x_i) + w_0-y_i\le\epsilon+\xi_i
+\text{ subject to}&\quad \mathbf{w} ^T \phi(\mathbf{w}_i) + w_0-y_i\le\epsilon+\xi_i
 \\
-	&\quad y_i-(\bold w ^T \phi(\bold x_i) + w_0)\le\epsilon+\xi_i^*
+	&\quad y_i-(\mathbf{w} ^T \phi(\mathbf{w}_i) + w_0)\le\epsilon+\xi_i^*
     \\
 	&\quad \xi_i,\xi^*_i \ge 0
 \end{aligned}
@@ -112,12 +112,12 @@ Now we can still solve this constrained problem with the lagrangians
 Incorporating the constraints with the lagrangian will result in:
 
 $$
-L = \frac{||\mathbf{w}||^2}{2} + C\sum_i(\xi_i + \xi_i^*) - \sum_i \alpha_i(\epsilon+\xi_i-y_i +\bold w ^T \phi(\bold x_i) + w_0) -\sum_i \alpha_i^*(\epsilon+\xi_i+y_i -\bold w ^T \phi(\bold x_i) -w_0) -\sum_i\beta_i\xi_i -\sum_i\beta_i^*\xi_i^*
+L = \frac{||\mathbf{w}||^2}{2} + C\sum_i(\xi_i + \xi_i^*) - \sum_i \alpha_i(\epsilon+\xi_i-y_i +\mathbf{w} ^T \phi(\mathbf{w}_i) + w_0) -\sum_i \alpha_i^*(\epsilon+\xi_i+y_i -\mathbf{w} ^T \phi(\mathbf{w}_i) -w_0) -\sum_i\beta_i\xi_i -\sum_i\beta_i^*\xi_i^*
 $$
 
 Vanishing the derivatives (gradient) with relation to the primal variables we obtain:
 
-$\displaystyle \frac{\delta L}{\delta \mathbf{w}} = \mathbf w -\sum_{i=1}^m(\alpha_i^* - \alpha_i)\phi(\mathbf{x}_i) = 0 \Rightarrow \mathbf{w} =\sum^m_{i=1}(\alpha_i-\alpha_i^*)\phi(\bold x_i)$ 
+$\displaystyle \frac{\delta L}{\delta \mathbf{w}} = \mathbf w -\sum_{i=1}^m(\alpha_i^* - \alpha_i)\phi(\mathbf{x}_i) = 0 \mathbb{R}ightarrow \mathbf{w} =\sum^m_{i=1}(\alpha_i-\alpha_i^*)\phi(\mathbf{w}_i)$ 
 
 $\displaystyle \frac{\delta L}{\delta w_0} = 0\to\sum_i(\alpha_i^*-\alpha_i) = 1$
 
@@ -127,8 +127,8 @@ $\displaystyle \frac{\delta L}{\delta \xi_i^*} = C-\alpha_i^*-\beta_i^*=0$
 
 And substituting in the lagrangian we get (after derivatives and semplifications):
 $$
-\displaystyle \max_{\alpha\in\R^m}\quad 
--\frac12\sum_{i,j=1}^m(\alpha_i^*-\alpha_i)(\alpha_j^*-\alpha_j)\phi(\bold x_i)^T\phi(\bold x_j)
+\displaystyle \max_{\alpha\in\mathbb{R}^m}\quad 
+-\frac12\sum_{i,j=1}^m(\alpha_i^*-\alpha_i)(\alpha_j^*-\alpha_j)\phi(\mathbf{w}_i)^T\phi(\mathbf{w}_j)
 -\epsilon\sum_{i=1}^m(\alpha_i^*+\alpha_i)+\sum_{i=1}^my_i(\alpha_i^*-\alpha_i)
 \\
 \text{ subject to}\quad 
@@ -141,10 +141,10 @@ $$
 replacing what we found in the “classification” function, we get: 
 $$
 \displaystyle
-f(\bold x)=\bold w^T\phi(\bold x)+w_0=\sum_{i=1}^m(\alpha_i-\alpha_i^*)\phi(\bold x_i)^T\phi(\bold x)+w_0
+f(\mathbf{w})=\mathbf{w}^T\phi(\mathbf{w})+w_0=\sum_{i=1}^m(\alpha_i-\alpha_i^*)\phi(\mathbf{w}_i)^T\phi(\mathbf{w})+w_0
 $$
 
-> using $\bold x$ instead of $\phi(\bold x)$ it would be linear regression
+> using $\mathbf{w}$ instead of $\phi(\mathbf{w})$ it would be linear regression
 
 ### Karush-Khun-Tucker conditions 
 
@@ -152,8 +152,8 @@ In terms of support vectors, we have (iconstraints):
 
 - at the saddle point it holds that $\forall i$:
   $$
-  \alpha_i(\epsilon+\xi_i+y_i-\bold w^T\phi(\bold x_i)-w_0)=0\\
-  \alpha_i^*(\epsilon+\xi_i^*-y_i+\bold w^T\phi(\bold x_i)+w_0)=0\\
+  \alpha_i(\epsilon+\xi_i+y_i-\mathbf{w}^T\phi(\mathbf{w}_i)-w_0)=0\\
+  \alpha_i^*(\epsilon+\xi_i^*-y_i+\mathbf{w}^T\phi(\mathbf{w}_i)+w_0)=0\\
   \beta_i\xi_i=0\\
   \beta_i^*\xi_i^*=0
   $$
