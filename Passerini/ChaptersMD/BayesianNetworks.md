@@ -14,7 +14,7 @@ output:
 
 # Bayesian Networks (BN)
 
-Are probabilistic graphical models used in order to represent probability distributions across multiple related variables.
+Probabilistic graphical models are used in order to represent probability distributions across multiple related variables.
 This type of model permits to truly see what are the relations between variables from a qualitative aspect allowing to:
 - visualize the structure of the model in a intuitive way
 - discover propterties of the model by inspecting the graph (e.g. conditional independencies)
@@ -27,7 +27,7 @@ A BN structure $(G)$ is a *directed graphical model* in which each node represen
 
 This structure encodes a set **local** indipendencies :
 $$
- I_l(G) = \{ \forall i x_i \perp \text{NonDescendatns}_{x_i} | \text{Parents}_{x_i} \}
+ I_l(G) = \{ \forall i \space x_i \perp \text{NonDescendatns}_{x_i} | \text{Parents}_{x_i} \}
 $$
 
 where it states that $x_i$ is independent ($\perp$) of it's non descendants given its parent. This separates all the parent nodes from the previous set of total nodes.
@@ -89,8 +89,14 @@ $$
 
 These assumptions can be verified by repeated applications of sum and product rules
 
-add rules
-
+> Sum rule: $\displaystyle p(a) = \sum_b p(a, b)$
+>
+> product rule: $p(a,b) = p(a|b)p(b)$
+>
+> Bayes rule: $\displaystyle p(a,b) = p(a|b)p(b) = p(a|b)p(b) \Rightarrow p(a|b) = \frac{p(b|a)p(a)}{p(b)}$
+>
+> Independency in network can be verify by applying those rules and visually inspecting the network if know what to watch
+> 
 The vantage of having a craphical model is that we can verify directly those assumption through the use of the **d-separation** criterion
 
 ## D-Separation
